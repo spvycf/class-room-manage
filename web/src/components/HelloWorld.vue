@@ -19,7 +19,7 @@
           Forum
         </a>
       </li>
-      <li>
+      <li class="iconfont icon-yonghu">
         <a
           href="https://chat.vuejs.org"
           target="_blank"

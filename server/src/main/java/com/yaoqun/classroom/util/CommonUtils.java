@@ -2,10 +2,7 @@ package com.yaoqun.classroom.util;
 
 import java.lang.reflect.Field;
 
-/**
- * @author doger.wang
- * @date 2019/11/26 17:05
- */
+
 public class CommonUtils {
     /**列出domain所有get方法
      * @param object

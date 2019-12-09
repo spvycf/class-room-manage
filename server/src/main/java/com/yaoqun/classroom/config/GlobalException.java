@@ -10,10 +10,7 @@ import sun.misc.REException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author doger.wang
- * @date 2019/11/25 15:54
- */
+
 @ControllerAdvice
 public class GlobalException {
 

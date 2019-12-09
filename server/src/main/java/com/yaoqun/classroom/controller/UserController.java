@@ -6,15 +6,9 @@ import com.yaoqun.classroom.entity.User;
 import com.yaoqun.classroom.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * @author doger.wang
- * @date 2019/11/25 14:24
- */
+
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -32,5 +26,17 @@ public class UserController {
     public Result register(@RequestBody User user) {
         Object object = userService.register(user);
         return ResultUtil.Success("注册成功", object);
+    }
+
+    @PostMapping("/update")
+    public Result update(@RequestBody User user) {
+        Object object = userService.updateUser(user);
+        return ResultUtil.Success("修改成功", object);
+    }
+
+    @PostMapping("/list/{page}/{row}")
+    public Result list(@PathVariable("page")int page,@PathVariable("row")int row, @RequestBody User user) {
+        Object object = userService.listUsers(page,row,user);
+        return ResultUtil.Success("查询成功", object);
     }
 }

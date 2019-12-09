@@ -8,10 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * @author doger.wang
- * @date 2019/8/26 14:27
- */
 
 @Configuration
 public class LocalDateTimeSerializerConfig {

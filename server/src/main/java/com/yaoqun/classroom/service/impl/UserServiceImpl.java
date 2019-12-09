@@ -1,7 +1,10 @@
 package com.yaoqun.classroom.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
@@ -101,6 +104,48 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         save.setCreateTime(now);
         save.setUpdateTime(now);
         return this.save(save);
+
+    }
+
+    @Override
+    public Object updateUser(User user) {
+        String id = user.getId();
+        String loginNo = user.getLoginNo();
+        String password = user.getPassword();
+        Integer age = user.getAge();
+        String classNO = user.getClassNO();
+        String phone = user.getPhone();
+        String profession = user.getProfession();
+        String sex = user.getSex();
+        String type = user.getType();
+        String userName = user.getUserName();
+        if (StringUtils.isEmpty(loginNo)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"登录账号不能空");
+        }
+        if (StringUtils.isEmpty(type)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"注册类型不能为空");
+        }
+        if (StringUtils.isEmpty(userName)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"用户名称不能为空");
+        }
+
+
+        user.setUpdateTime(LocalDateTime.now());
+        return updateById(user);
+    }
+
+    @Override
+    public Object listUsers(int page, int row, User user) {
+        Page<User> pageInfo = new Page<>(page, row);
+
+
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<User> lambda = wrapper.lambda();
+        
+
+
+        IPage<User> result = page(pageInfo, wrapper);
+        return result;
 
     }
 
