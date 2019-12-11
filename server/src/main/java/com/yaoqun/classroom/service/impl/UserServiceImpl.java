@@ -141,7 +141,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         LambdaQueryWrapper<User> lambda = wrapper.lambda();
-        
+        if (StringUtils.isNotEmpty(user.getLoginNo())){
+            lambda.like(User::getLoginNo,user.getLoginNo());
+        }
+        if (StringUtils.isNotEmpty(user.getUserName())){
+            lambda.like(User::getUserName,user.getUserName());
+        }
+        if (StringUtils.isNotEmpty(user.getClassNO())){
+            lambda.like(User::getClassNO,user.getClassNO());
+        }
+        if (StringUtils.isNotEmpty(user.getPhone())){
+            lambda.like(User::getPhone,user.getPhone());
+        }
+        if (StringUtils.isNotEmpty(user.getProfession())){
+            lambda.like(User::getProfession,user.getProfession());
+        }
+        if (StringUtils.isNotEmpty(user.getType())){
+            lambda.eq(User::getType,user.getType());
+        }
+
 
 
         IPage<User> result = page(pageInfo, wrapper);
