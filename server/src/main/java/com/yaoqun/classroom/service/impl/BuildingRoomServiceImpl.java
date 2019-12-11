@@ -1,5 +1,6 @@
 package com.yaoqun.classroom.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yaoqun.classroom.entity.BuildingRoom;
 import com.yaoqun.classroom.mapper.BuildingRoomMapper;
 import com.yaoqun.classroom.service.IBuildingRoomService;
@@ -21,4 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, BuildingRoom> implements IBuildingRoomService {
 
+    @Override
+    public boolean checkRoomIsClear(String buildingNo) {
+        QueryWrapper<BuildingRoom> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(BuildingRoom::getBuildingNo,buildingNo);
+        int count = count(wrapper);
+        return count==0;
+
+
+    }
 }

@@ -119,6 +119,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String sex = user.getSex();
         String type = user.getType();
         String userName = user.getUserName();
+        if (StringUtils.isEmpty(id)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"用户id不能为空");
+        }
         if (StringUtils.isEmpty(loginNo)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"登录账号不能空");
         }
