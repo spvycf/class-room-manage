@@ -6,4 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface ICourseArrangeService extends IService<CourseArrange> {
 
+    boolean checkExistCource(String id);
+
+    Object saveCourseArrange(CourseArrange course);
 }

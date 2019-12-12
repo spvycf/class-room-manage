@@ -1,9 +1,13 @@
 package com.yaoqun.classroom.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.time.LocalTime;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -15,7 +19,8 @@ import lombok.experimental.Accessors;
 @TableName("course_arrange")
 public class CourseArrange implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5078778226379468841L;
+
 
     /**
      * id
@@ -44,18 +49,24 @@ public class CourseArrange implements Serializable {
     private String type;
 
     /**
+     * 日期，每周每天则为空
+     */
+
+    private LocalDate date;
+
+    /**
      * 开始时间
      */
     @TableField("startTime")
 
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
     /**
      * 结束时间
      */
     @TableField("endTime")
 
-    private LocalDateTime endTime;
+    private LocalTime endTime;
 
     /**
      * 所属人
