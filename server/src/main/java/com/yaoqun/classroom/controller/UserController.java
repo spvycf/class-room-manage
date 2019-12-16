@@ -1,5 +1,6 @@
 package com.yaoqun.classroom.controller;
 
+import com.yaoqun.classroom.common.Constatnt;
 import com.yaoqun.classroom.common.Result;
 import com.yaoqun.classroom.common.ResultUtil;
 import com.yaoqun.classroom.entity.User;
@@ -29,13 +30,13 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public Result update(@RequestBody User user) {
+    public Result update(@RequestHeader(Constatnt.uId)String uId, @RequestBody User user) {
         Object object = userService.updateUser(user);
         return ResultUtil.Success("修改成功", object);
     }
 
     @PostMapping("/list/{page}/{row}")
-    public Result list(@PathVariable("page")int page,@PathVariable("row")int row, @RequestBody User user) {
+    public Result list(@RequestHeader(Constatnt.uId)String uId,@PathVariable("page")int page,@PathVariable("row")int row, @RequestBody User user) {
         Object object = userService.listUsers(page,row,user);
         return ResultUtil.Success("查询成功", object);
     }

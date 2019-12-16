@@ -1,7 +1,9 @@
 package com.yaoqun.classroom.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
 import com.yaoqun.classroom.entity.BuildingType;
@@ -88,6 +90,22 @@ public class BuildingTypeServiceImpl extends ServiceImpl<BuildingTypeMapper, Bui
         }
         return removeById(buildingType);
 
+
+
+    }
+
+    @Override
+    public Object listBuildingTypes(int page, int row, BuildingType buildingType) {
+        Page<BuildingType> page1 = new Page<>(page, row);
+        QueryWrapper<BuildingType> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<BuildingType> lambda = wrapper.lambda();
+        if (StringUtils.isNotEmpty(buildingType.getBuildingNo())){
+            lambda.like(BuildingType::getBuildingNo,buildingType.getBuildingNo());
+        }
+        if (StringUtils.isNotEmpty(buildingType.getBuildingName())){
+            lambda.like(BuildingType::getBuildingName,buildingType.getBuildingName());
+        }
+        return page(page1,wrapper);
 
 
     }

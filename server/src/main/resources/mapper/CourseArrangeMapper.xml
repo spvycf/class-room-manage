@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yaoqun.classroom.mapper.CourseArrangeMapper">
 
+    <select id="listCourses" resultType="com.yaoqun.classroom.entity.CourseArrangeDTO">
+        select c.*,
+               r.roomNo as roomNo,
+               t.buildingNo as buildingNo,t.buildingName as buildingName,
+               u.userName as userName,u.profession as profession,u.classNO as classNO,u.phone as phone,u.type as uType
+               from course_arrange c
+            left join building_room r on c.roomId=r.id
+            left join building_type t on t.id=r.buildingId
+            left join user u on u.id=c.userId
+        where 1=1
+        <if test="course.userId!=null and course.userId!=''">
+            and   c.userId=#{course.userId}
+        </if>
+        order by c.createTime desc
+
+
+    </select>
 </mapper>

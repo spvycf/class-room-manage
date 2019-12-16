@@ -12,4 +12,5 @@ public interface INoticeService extends IService<Notice> {
 
     Object deleteNotice(Notice notice);
 
+    Object listNotices(int page, int row, Notice notice);
 }

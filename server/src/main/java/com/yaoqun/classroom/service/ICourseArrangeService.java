@@ -8,5 +8,13 @@ public interface ICourseArrangeService extends IService<CourseArrange> {
 
     boolean checkExistCource(String id);
 
-    Object saveCourseArrange(CourseArrange course);
+    Object saveCourseArrange(CourseArrange course, String uId);
+
+    Object cancleCourseArrange(CourseArrange course);
+
+    Object applyCourseArrange(CourseArrange course);
+
+    Object returnCourseArrange(CourseArrange course);
+
+    Object listCourses(int page, int row, CourseArrange course, String uId);
 }

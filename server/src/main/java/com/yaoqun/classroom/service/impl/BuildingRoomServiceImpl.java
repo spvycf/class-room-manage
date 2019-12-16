@@ -1,7 +1,9 @@
 package com.yaoqun.classroom.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
 import com.yaoqun.classroom.entity.BuildingRoom;
@@ -34,7 +36,7 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
     @Override
     public boolean checkRoomIsClear(String buildingNo) {
         QueryWrapper<BuildingRoom> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(BuildingRoom::getBuildingNo,buildingNo);
+        wrapper.lambda().eq(BuildingRoom::getBuildingId,buildingNo);
         int count = count(wrapper);
         return count==0;
 
@@ -43,7 +45,7 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
 
     @Override
     public Object saveBuildingRoom(BuildingRoom room) {
-        String buildingNo = room.getBuildingNo();
+        String buildingNo = room.getBuildingId();
         String roomNO = room.getRoomNO();
         Integer roomSpace = room.getRoomSpace();
         String hasMedia = room.getHasMedia();
@@ -74,7 +76,7 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
         if (StringUtils.isEmpty(id)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教室id为空");
         }
-        String buildingNo = room.getBuildingNo();
+        String buildingNo = room.getBuildingId();
         String roomNO = room.getRoomNO();
         Integer roomSpace = room.getRoomSpace();
         String hasMedia = room.getHasMedia();
@@ -107,9 +109,27 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
 
     }
 
+    @Override
+    public Object listRooms(int page, int row, BuildingRoom room) {
+        Page<BuildingRoom> page1 = new Page<>(page, row);
+        QueryWrapper<BuildingRoom> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<BuildingRoom> lambda = wrapper.lambda();
+        if (StringUtils.isNotEmpty(room.getBuildingId())){
+            lambda.eq(BuildingRoom::getBuildingId,room.getBuildingId());
+        }
+        if (StringUtils.isNotEmpty(room.getRoomNO())){
+            lambda.like(BuildingRoom::getRoomNO,room.getRoomNO());
+        }
+        if (StringUtils.isNotEmpty(room.getHasMedia())){
+            lambda.eq(BuildingRoom::getHasMedia,room.getHasMedia());
+        }
+        return page(page1,wrapper);
+
+    }
+
     private void checkRoomIsExist(String buildingNo, String roomNO, String id) {
         QueryWrapper<BuildingRoom> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(BuildingRoom::getBuildingNo, buildingNo)
+        wrapper.lambda().eq(BuildingRoom::getBuildingId, buildingNo)
                 .eq(BuildingRoom::getRoomNO, roomNO);
         BuildingRoom one = getOne(wrapper);
         if (null != one && !id.equals(one.getId())) {

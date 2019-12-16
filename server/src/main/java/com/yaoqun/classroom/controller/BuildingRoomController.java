@@ -7,6 +7,7 @@ import com.yaoqun.classroom.entity.BuildingRoom;
 import com.yaoqun.classroom.entity.BuildingType;
 import com.yaoqun.classroom.service.IBuildingRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,4 +40,9 @@ public class BuildingRoomController {
         return ResultUtil.Success("删除成功", object);
     }
 
+    @PostMapping("/list/{page}/{row}")
+    public Result list(@PathVariable("page")int page, @PathVariable("row")int row, @RequestBody BuildingRoom room) {
+        Object object = roomService.listRooms(page,row,room);
+        return ResultUtil.Success("查询成功", object);
+    }
 }

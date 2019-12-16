@@ -22,9 +22,9 @@ public class BuildingRoom implements Serializable {
     /**
      * 教学楼简码
      */
-    @TableField("buildingNo")
+    @TableField("buildingId")
 
-    private String buildingNo;
+    private String buildingId;
 
     /**
      * 教室编号

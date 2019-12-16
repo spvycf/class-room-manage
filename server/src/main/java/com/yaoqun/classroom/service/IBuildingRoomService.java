@@ -13,4 +13,7 @@ public interface IBuildingRoomService extends IService<BuildingRoom> {
     Object updateBuildingRoom(BuildingRoom room);
 
     Object deleteBuildingRoom(BuildingRoom room);
+
+    Object listRooms(int page, int row, BuildingRoom room);
+
 }

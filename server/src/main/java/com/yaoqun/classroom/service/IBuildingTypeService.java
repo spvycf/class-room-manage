@@ -11,4 +11,7 @@ public interface IBuildingTypeService extends IService<BuildingType> {
     Object updateBuildingType(BuildingType buildingType);
 
     Object deleteBuildingType(BuildingType buildingType);
+
+    Object listBuildingTypes(int page, int row, BuildingType buildingType);
+
 }

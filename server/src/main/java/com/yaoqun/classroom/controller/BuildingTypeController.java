@@ -7,6 +7,7 @@ import com.yaoqun.classroom.entity.BuildingType;
 import com.yaoqun.classroom.entity.User;
 import com.yaoqun.classroom.service.IBuildingTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,4 +41,9 @@ public class BuildingTypeController {
         return ResultUtil.Success("删除成功", object);
     }
 
+    @PostMapping("/list/{page}/{row}")
+    public Result list(@PathVariable("page")int page, @PathVariable("row")int row, @RequestBody BuildingType buildingType) {
+        Object object = buildingTypeService.listBuildingTypes(page,row,buildingType);
+        return ResultUtil.Success("查询成功", object);
+    }
 }

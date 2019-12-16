@@ -7,6 +7,7 @@ import com.yaoqun.classroom.entity.Notice;
 import com.yaoqun.classroom.entity.User;
 import com.yaoqun.classroom.service.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +38,12 @@ public class NoticeController {
     public Result delete(@RequestBody Notice notice) {
         Object object = noticeService.deleteNotice(notice);
         return ResultUtil.Success("删除成功", object);
+    }
+
+    @PostMapping("/list/{page}/{row}")
+    public Result list(@PathVariable("page")int page, @PathVariable("row")int row, @RequestBody Notice notice) {
+        Object object = noticeService.listNotices(page,row,notice);
+        return ResultUtil.Success("查询成功", object);
     }
 
 }

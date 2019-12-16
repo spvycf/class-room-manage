@@ -1,6 +1,8 @@
 package com.yaoqun.classroom.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
 import com.yaoqun.classroom.entity.Notice;
@@ -65,5 +67,16 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"公告id为空");
         }
         return removeById(notice);
+    }
+
+    @Override
+    public Object listNotices(int page, int row, Notice notice) {
+        Page<Notice> pageInfo = new Page<>(page, row);
+        QueryWrapper<Notice> wrapper = new QueryWrapper<>();
+        wrapper.lambda().orderByDesc(Notice::getCreateTime);
+        return page(pageInfo,wrapper);
+
+
+
     }
 }
