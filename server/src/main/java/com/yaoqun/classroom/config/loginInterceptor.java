@@ -19,6 +19,10 @@ public class loginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+/*        String requestURI = request.getRequestURI();
+        if (requestURI.contains("login")){
+            return true;
+        }*/
         String uId = request.getHeader(Constatnt.uId);
         if (StringUtils.isEmpty(uId)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"用户登录信息为空");
