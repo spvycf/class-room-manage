@@ -14,7 +14,7 @@
 
 
       <el-form-item>
-        <el-button>注册</el-button>
+        <el-button  @click="toRegister">注册</el-button>
         <el-button type="primary" @click="onSubmit">登录</el-button>
       </el-form-item>
     </el-form>
@@ -38,20 +38,22 @@
     },
     methods: {
       onSubmit() {
-        let params = new URLSearchParams();
-        for(var key in this.form){
-          params.append(key,this.form[key])
+        loginUrl(this.form)
+        .then(res=>{
+          let id = res.data.id;
+          let name = res.data.userName;
+          this.$message.success({
+            message: '欢迎您,'+name,
+            center:true,
+          });
+          window.localStorage.setItem('token',id);
+          //准备路由
+
         }
-
-        console.log(params.get('loginNo'));
-        console.log(params.get('password'));
-
-        loginUrl(
-          params
-        ).then(res=>{
-          console.log(res)
-        })
-
+      )
+      },
+      toRegister(){
+        this.$router.replace('/register');
       }
     }
   }

@@ -2,7 +2,8 @@
  * 请求拦截、相应拦截、错误统一处理
  */
 import axios from 'axios';
-import QS from 'qs';
+import ElementUI from 'element-ui';
+//import QS from 'qs';
 
 //import store from '../store/index'
 
@@ -23,7 +24,10 @@ axios.interceptors.request.use(
     // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
     // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
     //const token = store.state.token;
-   // token && (config.headers.Authorization = token);
+    //token && (config.headers.Authorization = token);
+    let token = window.localStorage.getItem("token");
+    console.log("uId="+token);
+    config.headers["uId"]=token;
     return config;
   },
   error => {
@@ -34,6 +38,14 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => {
     if (response.status === 200) {
+      let code = response.data.code;
+      if (0!=code){
+        ElementUI.Message({
+          message: response.data.message,
+          type: 'error',
+          center:true
+        });
+      }
       return Promise.resolve(response);
     } else {
       return Promise.reject(response);
@@ -85,7 +97,7 @@ export function get(url, params){
  */
 export function post(url, params) {
   return new Promise((resolve, reject) => {
-    axios.post(url, QS.stringify(params))
+    axios.post(url, params)
       .then(res => {
         resolve(res.data);
       })
