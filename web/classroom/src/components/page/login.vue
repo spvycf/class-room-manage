@@ -48,6 +48,7 @@
           });
           window.localStorage.setItem('token',id);
           //准备路由
+          this.$router.replace('/home')
 
         }
       )

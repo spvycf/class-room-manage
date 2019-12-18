@@ -18,14 +18,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author dogerWang
- * @since 2019-11-26
- */
+
 @Slf4j
 @Service
 @Transactional

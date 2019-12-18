@@ -26,7 +26,7 @@
       </el-form-item>
 
       <el-form-item label="年龄">
-        <el-input v-model="registForm.age"></el-input>
+        <el-input v-model="registForm.age" type="number"></el-input>
       </el-form-item>
       <el-form-item label="专业">
         <el-input v-model="registForm.profession" ></el-input>
@@ -41,6 +41,9 @@
 
       <el-form-item>
         <el-button type="primary" @click="onSubmit" >提交</el-button>
+      </el-form-item>
+      <el-form-item>
+        <router-link to="/login">已有账号,返回登录</router-link>
       </el-form-item>
 
     </el-form>
@@ -71,13 +74,25 @@
     },
     methods: {
       onSubmit() {
+        let password = this.registForm.password;
+        let repassword = this.registForm.repassword;
+        if (password!=repassword){
+          this.$message.error({
+            message:"两次密码输入不一致",
+            center:true
+          });
+          return;
+        }
+
         registerUrl(this.registForm)
         .then(res=>{
 
           this.$message.success({
-            message:res.data.message,
+            message:res.message,
             center:true
           });
+          this.$router.replace('/home')
+
 
         })
       }

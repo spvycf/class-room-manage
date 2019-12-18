@@ -10,10 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author doger.wang
- * @date 2019/12/14 10:46
- */
+
 @Component
 public class loginInterceptor implements HandlerInterceptor {
 
