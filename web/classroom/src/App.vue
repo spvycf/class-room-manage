@@ -9,7 +9,9 @@
     <el-container>
       <left></left>
       <el-main >
-      <router-view></router-view>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
     </el-main>
     </el-container>
 
@@ -33,6 +35,8 @@
       components: {
         headerNav: header,
         left: left
+
+
       }
 
 

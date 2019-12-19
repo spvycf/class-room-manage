@@ -7,7 +7,7 @@
           <el-dropdown-item>修改信息</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <span>王小虎</span>
+      <span>Li</span>
       <span>退出</span>
     </el-header>
   </el-header>
