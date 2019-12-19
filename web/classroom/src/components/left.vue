@@ -1,5 +1,7 @@
 <template>
 
+<div class="left">
+
 
 
     <el-aside  width="200px" style="background-color: rgb(228, 228, 228)">
@@ -62,7 +64,7 @@
 
 
 
-
+</div>
 
 
 </template>
@@ -74,6 +76,15 @@
   }
   .el-aside {
     color: #333;
+    height: 100%;
+  }
+  .left{
+    height: 100%;
+
+
+
+
+
   }
 </style>
 

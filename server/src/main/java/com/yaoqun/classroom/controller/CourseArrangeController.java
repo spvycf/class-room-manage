@@ -4,16 +4,13 @@ package com.yaoqun.classroom.controller;
 import com.yaoqun.classroom.common.Constatnt;
 import com.yaoqun.classroom.common.Result;
 import com.yaoqun.classroom.common.ResultUtil;
-import com.yaoqun.classroom.entity.BuildingRoom;
 import com.yaoqun.classroom.entity.CourseArrange;
 import com.yaoqun.classroom.service.ICourseArrangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 
-
-@Controller
+@RestController
 @RequestMapping("/classroom/course-arrange")
 public class CourseArrangeController {
 

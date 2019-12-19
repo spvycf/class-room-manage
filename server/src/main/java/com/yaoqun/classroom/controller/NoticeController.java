@@ -7,16 +7,13 @@ import com.yaoqun.classroom.entity.Notice;
 import com.yaoqun.classroom.entity.User;
 import com.yaoqun.classroom.service.INoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
 
-@Controller
-@RequestMapping("/classroom/notice")
+@RestController
+@RequestMapping("/notice")
 public class NoticeController {
 
     @Autowired

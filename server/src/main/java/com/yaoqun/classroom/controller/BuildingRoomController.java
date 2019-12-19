@@ -4,18 +4,12 @@ package com.yaoqun.classroom.controller;
 import com.yaoqun.classroom.common.Result;
 import com.yaoqun.classroom.common.ResultUtil;
 import com.yaoqun.classroom.entity.BuildingRoom;
-import com.yaoqun.classroom.entity.BuildingType;
 import com.yaoqun.classroom.service.IBuildingRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
 @RequestMapping("/buildingRoom")
 public class BuildingRoomController {
 

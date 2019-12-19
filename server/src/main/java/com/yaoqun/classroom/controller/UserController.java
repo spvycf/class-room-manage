@@ -5,12 +5,10 @@ import com.yaoqun.classroom.common.Result;
 import com.yaoqun.classroom.common.ResultUtil;
 import com.yaoqun.classroom.entity.User;
 import com.yaoqun.classroom.service.IUserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {

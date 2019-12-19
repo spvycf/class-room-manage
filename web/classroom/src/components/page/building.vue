@@ -1,5 +1,5 @@
 <template>
   <div>
-    notice.vue
+    notice
   </div>
 </template>
