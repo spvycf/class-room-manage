@@ -3,9 +3,18 @@
 
   <div>
 
+
     <header-nav></header-nav>
-    <left></left>
-    <router-view></router-view>
+    <el-container style="height: 100%; border: 2px ">
+    <el-container>
+      <left></left>
+      <el-main >
+      <router-view></router-view>
+    </el-main>
+    </el-container>
+
+    </el-container>
+
   </div>
 
 

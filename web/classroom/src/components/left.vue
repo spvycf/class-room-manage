@@ -1,66 +1,70 @@
 <template>
-  <div class="left-nav">
-    <ul>
-      <li>
-        <div>通知</div>
-      </li>
-
-      <li>
-        <div>课程信息</div>
-      </li>
-
-      <li>
-        <div>我的预约</div>
-      </li>
-
-      <li>
-        <div>个人信息</div>
-      </li>
 
 
 
-      <li>
+    <el-aside  width="200px" style="background-color: rgb(228, 228, 228)">
+    <el-menu default-active="1">
+      <el-menu-item index="/notice" router="true" >
+        <i class="el-icon-news">
+          <span slot="title">公告</span>
+        </i>
+      </el-menu-item>
 
-        <div>统计</div>
-      </li>
 
 
-    </ul>
-  </div>
+
+        <el-submenu index="2">
+        <template slot="title"><i class="el-icon-menu"></i>管理中心</template>
+
+          <el-submenu>
+            <template slot="title"><i class="el-icon-school"></i>教室管理</template>
+            <el-menu-item index="2-1"><i class="el-icon-office-building"></i>教学楼管理</el-menu-item>
+            <el-menu-item index="2-1"><i class="el-icon-document-copy"></i>课程管理</el-menu-item>
+          </el-submenu>
+
+          <el-menu-item index="2-1"><i class="el-icon-user-solid"></i>人员管理</el-menu-item>
+          <el-menu-item index="2-1"><i class="el-icon-info"></i> 公告管理</el-menu-item>
+      </el-submenu>
+
+        <el-menu-item index="/" router="true" >
+          <i class="el-icon-news">
+            <span slot="title">借还审批</span>
+          </i>
+        </el-menu-item>
+
+
+
+    </el-menu>
+  </el-aside>
+
+
+
+
+
+
 </template>
+<style>
+  .el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    line-height: 60px;
+  }
+  .el-aside {
+    color: #333;
+  }
+</style>
 
 <script>
   export default {
-
-    data () {
+    data() {
+      const item = {
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      };
       return {
-
+        tableData: Array(20).fill(item)
       }
     }
-  }
+  };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-  .left-nav{
-    color:#fff;
-    font-size:20px;
-    height:100%;
-    background-color: #1D8ce0;
-    float:left;
-    width:15%;
-  }
-  .iconfont{
-    font-size:24px;
-  }
-  .left-nav ul{
-    padding:0px;
-    margin: 0px;
-  }
-  .left-nav li{
-    list-style: none;
-    text-align: center;
-    border-bottom:1px solid #20a0ff;
-    padding:10px;
-  }
-</style>
