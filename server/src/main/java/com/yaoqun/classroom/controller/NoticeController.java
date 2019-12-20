@@ -43,4 +43,10 @@ public class NoticeController {
         return ResultUtil.Success("查询成功", object);
     }
 
+    @PostMapping("/get")
+    public Result get(@RequestBody Notice notice) {
+        Object object = noticeService.get(notice);
+        return ResultUtil.Success("查询成功", object);
+    }
+
 }

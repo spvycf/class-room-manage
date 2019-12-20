@@ -72,4 +72,13 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
 
     }
+
+    @Override
+    public Object get(Notice notice) {
+        String id = notice.getId();
+        if (StringUtils.isEmpty(id)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"公告id为空");
+        }
+        return getById(notice);
+    }
 }

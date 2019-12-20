@@ -7,6 +7,14 @@ import notice from '@/components/page/notice'
 import user from '@/components/page/user'
 import building from '@/components/page/building'
 import course from '@/components/page/course'
+import buildingManage from '@/components/page/buildingManage'
+import courseManage from '@/components/page/courseManage'
+import userManage from '@/components/page/userManage'
+import noticeManage from '@/components/page/noticeManage'
+import process from '@/components/page/process'
+
+
+
 
 Vue.use(Router)
 
@@ -52,6 +60,31 @@ export default new Router({
       path: '/course',
       name: 'course',
       component: course
+    },
+    {
+      path: '/buildingManage',
+      name: 'buildingManage',
+      component: buildingManage
+    },
+    {
+      path: '/courseManage',
+      name: 'courseManage',
+      component: courseManage
+    },
+    {
+      path: '/userManage',
+      name: 'userManage',
+      component: userManage
+    },
+    {
+      path: '/noticeManage',
+      name: 'noticeManage',
+      component: noticeManage
+    },
+    {
+      path: '/process',
+      name: 'process',
+      component: process
     }
 
   ]

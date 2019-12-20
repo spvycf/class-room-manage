@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="80px">
+    <el-form ref="form" :model="form" label-width="80px" size="medium  ">
       <el-form-item label="登录名">
         <el-input v-model="form.loginNo"></el-input>
       </el-form-item>
@@ -62,5 +62,8 @@
 
 
 <style scoped>
+  .el-input{
+    width: 280px;
+  }
 
 </style>
