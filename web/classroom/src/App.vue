@@ -4,12 +4,12 @@
   <div>
 
 
-    <header-nav></header-nav>
+    <header-nav v-if="header_left_show"></header-nav>
     <el-container style="height: 100%; border: 2px ">
     <el-container>
-      <left></left>
+      <left  v-if="header_left_show"></left>
       <el-main >
-          <router-view v-if="isRouterAlive"></router-view>
+          <router-view v-if="isRouterAlive" v-on:header="header_left"></router-view>
     </el-main>
     </el-container>
 
@@ -41,10 +41,15 @@
       },
       data(){
         return {
-          isRouterAlive: true
+          isRouterAlive: true,
+          header_left_show:true,
         }
       },
       methods:{
+        //是否显示头部
+        header_left:function (bool) {
+          this.header_left_show = bool;
+        },
         reload(){
           this.isRouterAlive = false;
           this.$nextTick(function () {

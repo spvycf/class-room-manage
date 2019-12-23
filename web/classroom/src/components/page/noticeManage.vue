@@ -9,19 +9,20 @@
       <el-table-column
         prop="title"
         label="标题"
-        width="300px"
+        width="500px"
+        show-overflow-tooltip="true"
         align="center">
       </el-table-column>
-      <el-table-column
+<!--      <el-table-column
         prop="content"
         label="内容"
-        width="300px"
+        width="500px"
         align="center">
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column
         prop="createTime"
         label="发布时间"
-        width="300px"
+        width="500px"
         align="center">
 
       </el-table-column>
@@ -35,7 +36,13 @@
             @click.native.prevent="handleSee(scope.$index, scope.row)"
             type="text"
             size="small">
-            查看详情
+            查看
+          </el-button>
+          <el-button
+            @click.native.prevent="handleUpdate(scope.$index, scope.row)"
+            type="text"
+            size="small">
+            编辑
           </el-button>
           <el-button
             @click.native.prevent="handleDelete(scope.$index, scope.row)"
@@ -45,9 +52,21 @@
           </el-button>
         </template>
       </el-table-column>
-
     </el-table>
-  </div>
+
+      <el-pagination
+        background
+        style=""
+        :hide-on-single-page="false"
+        layout="total,prev, pager, next"
+        :total=totalNum
+        :size=size
+        class="pagination"
+
+      >
+      </el-pagination>
+    </div>
+
 </template>
 
 <script>
@@ -62,17 +81,22 @@
     data(){
       return{
         tableData:[],
-        showModal:false
+        showModal:false,
+        totalNum:'',
+        size:''
       }
     },
     comments:{
       'AddNotice':AddNotice
     },
     created() {
+
       listNoticeUrl(1,10)
         .then(res=>{
           let data = res.data.records;
           this.tableData=data;
+          this.totalNum=res.data.total;
+          this.size=res.data.size;
         })
     },
     methods:{
@@ -83,15 +107,23 @@
       },
 
       handleDelete(index,row){
-        console.log(row.id);
-        deleteNoticeUrl({'id':row.id})
-        .then(res=>{
-          this.$message.success({
-            message: '删除成功',
-            center: true,
-          });
-          this.reload();
+        this.$confirm('确定删除该公告吗?', '删除公告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteNoticeUrl({'id': row.id})
+            .then(res => {
+              this.$message.success({
+                message: '删除成功',
+                center: true,
+              });
+              this.reload();
+            });
         });
+
+
+
       },
 
       //新增
@@ -115,3 +147,11 @@
   }
 
 </script>
+
+<style>
+  .pagination{
+    text-align: center;
+    margin-top: 50px;
+  }
+
+</style>

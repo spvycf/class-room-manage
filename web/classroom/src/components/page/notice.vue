@@ -52,6 +52,7 @@
 
     },
     created() {
+
       listNoticeUrl(1,10)
       .then(res=>{
         let data = res.data.records;

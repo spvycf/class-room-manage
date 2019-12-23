@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/page/login'
 import register from '@/components/page/register'
-import home from '@/components/page/home'
 import notice from '@/components/page/notice'
 import user from '@/components/page/user'
 import building from '@/components/page/building'
@@ -35,11 +34,6 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: register
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: home
     },
     {
       path: '/notice',
