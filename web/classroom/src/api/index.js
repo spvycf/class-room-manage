@@ -26,7 +26,7 @@ axios.interceptors.request.use(
     //const token = store.state.token;
     //token && (config.headers.Authorization = token);
     let token = window.localStorage.getItem("token");
-    console.log("uId="+token);
+    //console.log("uId="+token);
     config.headers["uId"]=token;
     return config;
   },

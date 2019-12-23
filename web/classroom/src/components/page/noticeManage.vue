@@ -2,7 +2,8 @@
 
   <div>
     <el-button type="primary"  @click="showAdd">新增公告</el-button>
-    <AddNotice v-show="showModal" @on-cancel="cancel"></AddNotice>
+    <AddNotice v-show="showModal" @on-cancel="cancel" ref="addNotice"></AddNotice>
+    <ShowNotice v-show="showNoticeModal" @on-close="closeNotice" ref="showNotice"></ShowNotice>
     <el-table
       :data="tableData"
       style="width: 100%">
@@ -10,7 +11,7 @@
         prop="title"
         label="标题"
         width="500px"
-        show-overflow-tooltip="true"
+        :show-overflow-tooltip="true"
         align="center">
       </el-table-column>
 <!--      <el-table-column
@@ -74,20 +75,24 @@
   import {deleteNoticeUrl} from '@/api/api';
   import {getNoticeUrl} from '@/api/api';
   import AddNotice from "../modal/addNotice";
+  import ShowNotice from "../modal/showNotice";
+
   export default {
-    components: {AddNotice},
+    components: {AddNotice,ShowNotice},
     inject:['reload'],
     name:'noticeManage',
     data(){
       return{
         tableData:[],
         showModal:false,
-        totalNum:'',
-        size:''
+        showNoticeModal:false,
+        totalNum:0,
+        size:0
       }
     },
     comments:{
-      'AddNotice':AddNotice
+      'AddNotice':AddNotice,
+      'ShowNotice':ShowNotice,
     },
     created() {
 
@@ -101,9 +106,18 @@
     },
     methods:{
       handleSee(index,row){
-        console.log(row.id);
+        //console.log(row.id);
         //请求详情
-        getNoticeUrl({'id':row.id})
+        //this.$refs.addNotice.getNotice(row.id);
+
+        this.$refs.showNotice.getNotice(row.id);
+
+      },
+      handleUpdate(index,row){
+        //console.log(row.id);
+        //请求详情
+        this.$refs.addNotice.getNotice(row.id);
+
       },
 
       handleDelete(index,row){
@@ -133,6 +147,17 @@
 
       cancel(){
         this.showModal=false;
+      },
+
+      closeNotice(){
+        this.showNoticeModal=false;
+      },
+
+      open(){
+        this.showModal=true;
+      },
+      openShow(){
+        this.showNoticeModal=true;
       },
 
       reFresh(){

@@ -2,17 +2,25 @@
   <div class="modal-backdrop">
     <div class="modal" :style="mainStyles">
       <div class="modal-header">
-        <h3>新增公告</h3>
+        <h3>{{tt}}</h3>
       </div>
       <div class="modal-body">
         <el-form  ref="addNoticeForm" :model="addNoticeForm" label-width="80px" @submit.native.prevent >
+
+
+            <input v-model="addNoticeForm.id" v-show="false"></input>
+
+
 
           <el-form-item label="公告标题" prop="title"
                         :rules="[
       { required: true, message: '标题不能为空'}
     ]"
           >
-            <el-input v-model="addNoticeForm.title" ></el-input>
+            <el-input v-model="addNoticeForm.title"
+                      maxlength="20"
+                      show-word-limit
+            ></el-input>
           </el-form-item>
 
           <el-form-item prop="content"
@@ -49,6 +57,9 @@
 
 <script>
   import {saveNoticeUrl} from '@/api/api';
+  import {updateNoticeUrl} from '@/api/api';
+  import {getNoticeUrl} from '@/api/api';
+
 
   export default {
     name: 'AddNotice',
@@ -56,30 +67,72 @@
     },
     data() {
       return {
+        tt:'新增公告',
         addNoticeForm:{
+          id:'',
           title:'',
           content:'',
+
         }
       }
     },
     methods: {
       cancel() {
+         this.addNoticeForm.id="";
          this.addNoticeForm.title="";
          this.addNoticeForm.content="";
         this.$emit('on-cancel');
       },
       saveNotice(){
-        saveNoticeUrl(this.addNoticeForm)
-        .then(res=>{
-          this.$message.success({
-            message: '保存成功',
-            center:true,
-          });
-          this.cancel();
+        let updateId = this.addNoticeForm.id;
+        if (Object.keys(updateId).length==0){
+          //新增
+          saveNoticeUrl(this.addNoticeForm)
+            .then(res=>{
+              this.$message.success({
+                message: '保存成功',
+                center:true,
+              });
+              this.cancel();
 
-          this.$parent.reFresh();
-        });
+              this.$parent.reFresh();
+            });
+
+        }else {
+          //编辑
+          updateNoticeUrl(this.addNoticeForm)
+            .then(res=>{
+              this.$message.success({
+                message: '修改成功',
+                center:true,
+              });
+              this.cancel();
+              this.$parent.reFresh();
+            });
+
+
+        }
+
       },
+      //get
+      getNotice(id){
+        this.tt='编辑公告',
+          getNoticeUrl({'id':id})
+        .then(res=>{
+          console.log(res.data);
+          this.addNoticeForm.id=res.data.id;
+          this.addNoticeForm.title=res.data.title;
+          this.addNoticeForm.content=res.data.content;
+          this.$parent.open();
+
+        });
+
+
+
+
+      },
+
+
     }
   }
 </script>
@@ -110,7 +163,7 @@
   .modal-header {
     border-bottom: 1px solid #eee;
     color: #313131;
-    justify-content: space-between;
+    justify-content: center;
     padding: 15px;
     display: flex;
   }
