@@ -39,8 +39,20 @@
           </el-button>
         </template>
       </el-table-column>
-
     </el-table>
+    <el-pagination
+      background
+      style=""
+      :hide-on-single-page="false"
+      layout="total,prev, pager, next"
+      :total=totalNum
+      :size=size
+      class="pagination"
+      @current-change="currentChangeHandle"
+
+
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -55,7 +67,9 @@
     data(){
       return{
         showNoticeModal:false,
-        tableData:[]
+        tableData:[],
+        totalNum:0,
+        size:0
       }
 
     },
@@ -63,19 +77,14 @@
       'ShowNotice':ShowNotice,
     },
     created() {
-
+        this.$emit('header', true);
       listNoticeUrl(1,10)
       .then(res=>{
         let data = res.data.records;
         this.tableData=data;
-        console.log(data);
-
-
-
-
-
+        this.totalNum=res.data.total;
+        this.size=res.data.size;
       })
-
     },
     methods:{
       handleSee(index,row){
@@ -84,6 +93,15 @@
         //this.$refs.addNotice.getNotice(row.id);
         this.$refs.showNotice.getNotice(row.id);
 
+      },
+      currentChangeHandle(val){
+        listNoticeUrl(val,10)
+          .then(res=>{
+            let data = res.data.records;
+            this.tableData=data;
+            this.totalNum=res.data.total;
+            this.size=res.data.size;
+          });
       },
 
       openShow(){
@@ -97,3 +115,11 @@
   }
 
 </script>
+
+<style>
+  .pagination{
+    text-align: center;
+    margin-top: 50px;
+  }
+
+</style>

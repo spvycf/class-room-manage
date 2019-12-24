@@ -29,7 +29,7 @@
         </template>
 
 
-        <el-menu-item index="/user"><i class="el-icon-user"></i>个人信息</el-menu-item>
+        <el-menu-item index="/user"><i class="el-icon-user"></i>我的信息</el-menu-item>
         <el-menu-item index="/my"><i class="el-icon-reading"></i>我的申请</el-menu-item>
       </el-submenu>
 

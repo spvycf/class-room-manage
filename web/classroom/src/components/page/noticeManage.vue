@@ -63,6 +63,8 @@
         :total=totalNum
         :size=size
         class="pagination"
+        @current-change="currentChangeHandle"
+
 
       >
       </el-pagination>
@@ -135,9 +137,15 @@
               this.reload();
             });
         });
-
-
-
+      },
+      currentChangeHandle(val){
+        listNoticeUrl(val,10)
+          .then(res=>{
+            let data = res.data.records;
+            this.tableData=data;
+            this.totalNum=res.data.total;
+            this.size=res.data.size;
+          });
       },
 
       //新增
