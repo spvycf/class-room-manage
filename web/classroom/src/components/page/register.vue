@@ -115,7 +115,8 @@
             message:res.message,
             center:true
           });
-          this.$router.replace('/home')
+          this.$router.replace('/login')
+
 
 
         })

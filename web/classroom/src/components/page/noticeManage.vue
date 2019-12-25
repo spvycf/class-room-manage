@@ -130,12 +130,12 @@
         }).then(() => {
           deleteNoticeUrl({'id': row.id})
             .then(res => {
-              this.$message.success({
-                message: '删除成功',
-                center: true,
-              });
-              this.reload();
+            this.$message.success({
+              message: '删除成功',
+              center: true,
             });
+            this.reload();
+          });
         });
       },
       currentChangeHandle(val){

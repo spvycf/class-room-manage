@@ -46,11 +46,14 @@
         .then(res=>{
           let id = res.data.id;
           let name = res.data.userName;
+          let type = res.data.type;
           this.$message.success({
             message: '欢迎您,'+name,
             center:true,
           });
           window.localStorage.setItem('token',id);
+          window.localStorage.setItem('userName',name);
+          window.localStorage.setItem('type',type);
           //准备路由
           this.$router.replace('/notice')
 

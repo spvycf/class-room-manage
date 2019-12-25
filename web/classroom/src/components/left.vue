@@ -34,13 +34,13 @@
       </el-submenu>
 
 
-        <el-submenu index="2">
+        <el-submenu index="2" v-if="isAdmin()">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span slot="title">管理中心</span>
           </template>
 
-          <el-submenu  index="3">
+          <el-submenu  index="3" >
             <template slot="title"><i class="el-icon-school"></i>教室管理</template>
             <el-menu-item index="/buildingManage" ><i class="el-icon-office-building"></i>教学楼管理</el-menu-item>
             <el-menu-item index="/courseManage" ><i class="el-icon-document-copy"></i>课程管理</el-menu-item>
@@ -52,7 +52,7 @@
 
 
 
-      <el-menu-item index="/process">
+      <el-menu-item index="/process" v-if="isAdmin()">
         <i class="el-icon-s-grid"></i>
         <span slot="title">借还审批</span>
       </el-menu-item>
@@ -68,6 +68,7 @@
 
 
 </template>
+
 <style>
   .el-header {
     background-color: #B3C0D1;
@@ -90,6 +91,15 @@
 
 <script>
   export default {
+
+    methods: {
+      isAdmin(){
+        let type = window.localStorage.getItem('type');
+        return (type=='0');
+      }
+
+
+  },
 
   };
 </script>

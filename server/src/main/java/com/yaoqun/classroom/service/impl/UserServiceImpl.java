@@ -155,11 +155,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (StringUtils.isNotEmpty(user.getType())){
             lambda.eq(User::getType,user.getType());
         }
+        if (StringUtils.isNotEmpty(user.getSex())){
+            lambda.eq(User::getSex,user.getSex());
+        }
+        lambda.ne(User::getType,"0");
+        lambda.orderByDesc(User::getCreateTime);
 
 
 
         IPage<User> result = page(pageInfo, wrapper);
         return result;
+
+    }
+
+    @Override
+    public Object changeStatus(User user) {
+        String id = user.getId();
+        String status = user.getStatus();
+        User updateUser = new User();
+        updateUser.setId(id);
+        updateUser.setStatus(status);
+        return updateById(updateUser);
 
     }
 

@@ -45,8 +45,9 @@ axios.interceptors.response.use(
           type: 'error',
           center:true
         });
+      }else {
+        return Promise.resolve(response);
       }
-      return Promise.resolve(response);
     } else {
       return Promise.reject(response);
     }
