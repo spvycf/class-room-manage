@@ -7,6 +7,7 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Data
@@ -84,11 +85,10 @@ public class User implements Serializable {
     private String status;
 
     @TableField("createTime")
-
     private LocalDateTime createTime;
 
-    @TableField("updateTime")
 
+    @TableField("updateTime")
     private LocalDateTime updateTime;
 
 

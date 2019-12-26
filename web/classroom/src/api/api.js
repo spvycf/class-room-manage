@@ -16,5 +16,15 @@ export const getNoticeUrl =p => post('/api/notice/get',p);
 //用户
 export const listUserUrl =(page,row,p) => post('/api/user/list/'+page+'/'+row,p);
 export const changeStatusUrl =(p) => post('/api/user/changeStatus',p);
+export const getUserUrl =(p) => post('/api/user/get',p);
+export const updateUserUrl =(p) => post('/api/user/update',p);
+
+//教学楼
+export const listbuildingTypeUrl =(page,row,p) => post('/api/buildingType/list/'+page+'/'+row,p);
+export const changebuildingTypeStatusUrl =(p) => post('/api/buildingType/delete',p);
+export const getbuildingTypeUrl =(p) => post('/api/buildingType/get',p);
+export const updateBuildingUrl =(p) => post('/api/buildingType/update',p);
+export const saveBuildingUrl =(p) => post('/api/buildingType/save',p);
+
 
 

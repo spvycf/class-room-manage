@@ -1,6 +1,6 @@
 <template>
     <div class="modal-backdrop">
-      <div class="modal" :style="mainStyles">
+      <div class="modal" >
         <div class="modal-header">
           <h3 >{{title}}</h3>
         </div>

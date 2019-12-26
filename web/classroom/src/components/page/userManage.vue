@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <UpdateUser v-show="showUpdateUserModal" @on-close="cancel" ref="updateUser"></UpdateUser>
     <el-row :gutter="10">
       <el-col :span="4"><div class="grid-content bg-purple">
         姓名:
@@ -67,7 +67,7 @@
 
 
       <el-col :span="4" style="padding-left: 210px;padding-right: 75px;">
-        <el-button type="warning"  @click="cleanSearch" style="height: 36px" >清空</el-button>
+        <el-button type=""  @click="cleanSearch" style="height: 36px" >清空</el-button>
       </el-col>
 
       <el-col :span="4" style="padding-left: 6px">
@@ -147,7 +147,7 @@
         align="center"
         width="200">
         <template slot-scope="scope">
-          <el-button  @click="handleClick(scope.row)" type="info" size="small">编辑</el-button>
+          <el-button  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>
           <el-button type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">冻结</el-button>
           <el-button type="success" size="small" v-else @click="handleRelease(scope.row)">恢复</el-button>
         </template>
@@ -175,13 +175,16 @@
 </template>
 
 <script>
-  import AddNotice from "../modal/addNotice";
-  import ShowNotice from "../modal/showNotice";
+  import UpdateUser from "../modal/updateUser";
   import {listUserUrl} from '@/api/api';
   import {changeStatusUrl} from '@/api/api';
 
   export default {
-    components: {},
+    components: {UpdateUser},
+    comments:{
+    'UpdateUser':UpdateUser
+
+    },
     inject:['reload'],
     name:'userManage',
     data(){
@@ -215,13 +218,11 @@
         profession:'',
         tableData:[],
         totalNum:0,
-        size:0
+        size:0,
+        showUpdateUserModal:false
       }
     },
-    comments:{
 
-
-    },
 
     created() {
       listUserUrl(1,10,
@@ -330,6 +331,19 @@
           });
           this.reload();
         });
+      },
+      handleUpdate(row){
+        this.$refs.updateUser.getUser(row.id);
+
+      },
+      open(){
+        this.showUpdateUserModal=true;
+      },
+      cancel(){
+        this.showUpdateUserModal=false;
+      },
+      reFresh(){
+        this.reload();
       }
 
 

@@ -5,38 +5,36 @@
         <h3>{{tt}}</h3>
       </div>
       <div class="modal-body">
-        <el-form  ref="addNoticeForm" :model="addNoticeForm" label-width="80px" @submit.native.prevent >
+        <el-form  ref="addBuildingForm" :model="addBuildingForm" label-width="100px" @submit.native.prevent >
 
 
-            <input v-model="addNoticeForm.id" v-show="false"></input>
+          <input v-model="addBuildingForm.id" v-show="false"></input>
 
 
 
-          <el-form-item label="公告标题" prop="title"
+          <el-form-item label="教学楼编号" prop="buildingNo"
                         :rules="[
-      { required: true, message: '标题不能为空'}
+      { required: true, message: '教学楼编号不能为空'}
     ]"
           >
-            <el-input v-model="addNoticeForm.title"
+            <el-input v-model="addBuildingForm.buildingNo"
                       maxlength="20"
                       show-word-limit
             ></el-input>
           </el-form-item>
 
-          <el-form-item prop="content"
+          <el-form-item label="教学楼名称" prop="buildingName"
                         :rules="[
-      { required: true, message: '内容不能为空'}
+      { required: true, message: '教学楼名称不能为空'}
     ]"
           >
-            <el-input :autosize="{ minRows: 4, maxRows: 8}"
-              type="textarea"
-              placeholder="请输入内容"
-              v-model="addNoticeForm.content"
-              maxlength="600"
-              show-word-limit
-            >
-            </el-input>
+            <el-input v-model="addBuildingForm.buildingName"
+                      maxlength="20"
+                      show-word-limit
+            ></el-input>
           </el-form-item>
+
+
 
 
         </el-form>
@@ -46,7 +44,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-close" @click="cancel">取消</button>
-        <button type="button" class="btn-confirm" @click="saveNotice">提交</button>
+        <button type="button" class="btn-confirm" @click="save">提交</button>
       </div>
     </div>
 
@@ -56,38 +54,37 @@
 
 
 <script>
-  import {saveNoticeUrl} from '@/api/api';
-  import {updateNoticeUrl} from '@/api/api';
-  import {getNoticeUrl} from '@/api/api';
+  import {saveBuildingUrl} from '@/api/api';
+  import {updateBuildingUrl} from '@/api/api';
+  import {getbuildingTypeUrl} from "../../api/api";
 
 
   export default {
-    name: 'AddNotice',
+    name: 'AddBuildingType',
     props: {
     },
     data() {
       return {
-        tt:'新增公告',
-        addNoticeForm:{
+        tt:'新增教学楼',
+        addBuildingForm:{
           id:'',
-          title:'',
-          content:'',
+          buildingNo:'',
+          buildingName:'',
 
         }
       }
     },
     methods: {
       cancel() {
-         this.addNoticeForm.id="";
-         this.addNoticeForm.title="";
-         this.addNoticeForm.content="";
-        this.$emit('on-cancel');
+        this.addBuildingForm.buildingNo="";
+        this.addBuildingForm.buildingName="";
+        this.$emit('on-cancel-add');
       },
-      saveNotice(){
-        let updateId = this.addNoticeForm.id;
+      save(){
+        let updateId = this.addBuildingForm.id;
         if (Object.keys(updateId).length==0){
           //新增
-          saveNoticeUrl(this.addNoticeForm)
+          saveBuildingUrl(this.addBuildingForm)
             .then(res=>{
               this.$message.success({
                 message: '保存成功',
@@ -99,7 +96,7 @@
 
         }else {
           //编辑
-          updateNoticeUrl(this.addNoticeForm)
+          updateBuildingUrl(this.addBuildingForm)
             .then(res=>{
               this.$message.success({
                 message: '修改成功',
@@ -114,16 +111,16 @@
 
       },
       //get
-      getNotice(id){
-        this.tt='编辑公告',
-          getNoticeUrl({'id':id})
-        .then(res=>{
-          this.addNoticeForm.id=res.data.id;
-          this.addNoticeForm.title=res.data.title;
-          this.addNoticeForm.content=res.data.content;
-          this.$parent.open();
+      getBuilding(id){
+        this.tt='编辑教学楼',
+          getbuildingTypeUrl({'id':id})
+            .then(res=>{
+              this.addBuildingForm.id=res.data.id;
+              this.addBuildingForm.buildingNo=res.data.buildingNo;
+              this.addBuildingForm.buildingName=res.data.buildingName;
+              this.$parent.showAdd();
 
-        });
+            });
 
 
 

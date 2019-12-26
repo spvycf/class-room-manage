@@ -40,4 +40,10 @@ public class BuildingTypeController {
         Object object = buildingTypeService.listBuildingTypes(page,row,buildingType);
         return ResultUtil.Success("查询成功", object);
     }
+
+    @PostMapping("/get")
+    public Result get(@RequestBody BuildingType buildingType) {
+        Object object = buildingTypeService.getBuildingType(buildingType);
+        return ResultUtil.Success("获取成功", object);
+    }
 }

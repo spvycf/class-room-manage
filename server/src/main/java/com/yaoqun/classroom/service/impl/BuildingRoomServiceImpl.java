@@ -38,11 +38,11 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
 
     @Override
     public Object saveBuildingRoom(BuildingRoom room) {
-        String buildingNo = room.getBuildingId();
+        String buildingId = room.getBuildingId();
         String roomNO = room.getRoomNO();
         Integer roomSpace = room.getRoomSpace();
         String hasMedia = room.getHasMedia();
-        if (StringUtils.isEmpty(buildingNo)){
+        if (StringUtils.isEmpty(buildingId)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教学楼未选择");
         }
         if (StringUtils.isEmpty(roomNO)){
@@ -55,7 +55,7 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"未选择是否有多媒体");
         }
         String id = IdWorker.get32UUID();
-        checkRoomIsExist(buildingNo,roomNO, id);
+        checkRoomIsExist(buildingId,roomNO, id);
         room.setId(id);
         room.setStatus("0");
         return save(room);

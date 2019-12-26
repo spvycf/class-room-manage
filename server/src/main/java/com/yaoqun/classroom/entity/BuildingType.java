@@ -39,5 +39,8 @@ public class BuildingType implements Serializable {
 
     private String status;
 
+    @TableField(value = "false")
+    private int num;
+
 
 }

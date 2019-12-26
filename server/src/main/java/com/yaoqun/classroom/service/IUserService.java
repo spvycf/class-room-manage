@@ -15,4 +15,6 @@ public interface IUserService extends IService<User> {
     Object listUsers(int page, int row, User user);
 
     Object changeStatus(User user);
+
+    Object getUser(User user);
 }

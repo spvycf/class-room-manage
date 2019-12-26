@@ -2,10 +2,12 @@ package com.yaoqun.classroom.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
+import com.yaoqun.classroom.entity.BuildingRoom;
 import com.yaoqun.classroom.entity.BuildingType;
 import com.yaoqun.classroom.mapper.BuildingTypeMapper;
 import com.yaoqun.classroom.service.IBuildingRoomService;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Slf4j
 @Service
@@ -29,6 +33,7 @@ public class BuildingTypeServiceImpl extends ServiceImpl<BuildingTypeMapper, Bui
 
     @Autowired
     private ICourseArrangeService courseArrangeService;
+
 
     @Override
     public Object saveBuildingType(BuildingType buildingType) {
@@ -56,15 +61,27 @@ public class BuildingTypeServiceImpl extends ServiceImpl<BuildingTypeMapper, Bui
     public Object updateBuildingType(BuildingType buildingType) {
         String id = buildingType.getId();
         String buildingName = buildingType.getBuildingName();
+        String buildingNo = buildingType.getBuildingNo();
         if (StringUtils.isEmpty(id)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教学楼id不能为空");
         }
         if (StringUtils.isEmpty(buildingName)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教学楼名称不能为空");
         }
+        if (StringUtils.isEmpty(buildingNo)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教学楼编号不能为空");
+        }
+        QueryWrapper<BuildingType> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(BuildingType::getBuildingNo,buildingNo);
+        BuildingType one = getOne(wrapper);
+        if (null!=one && !one.getId().equals(id)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"已经存在相同教学楼名称");
+        }
         BuildingType type = new BuildingType();
         type.setId(id);
         type.setBuildingName(buildingName);
+        type.setBuildingNo(buildingNo);
         return updateById(type);
 
     }
@@ -98,8 +115,28 @@ public class BuildingTypeServiceImpl extends ServiceImpl<BuildingTypeMapper, Bui
         if (StringUtils.isNotEmpty(buildingType.getBuildingName())){
             lambda.like(BuildingType::getBuildingName,buildingType.getBuildingName());
         }
-        return page(page1,wrapper);
+        IPage<BuildingType> data = page(page1, wrapper);
+        List<BuildingType> records = data.getRecords();
+        for (BuildingType record : records) {
+            QueryWrapper<BuildingRoom> r = new QueryWrapper<>();
+            r.lambda()
+                    .eq(BuildingRoom::getBuildingId,record.getId());
+            int count = roomService.count(r);
+            record.setNum(count);
+        }
+        return data;
 
+
+    }
+
+    @Override
+    public Object getBuildingType(BuildingType buildingType) {
+        String id = buildingType.getId();
+        BuildingType one = getById(id);
+        if (null==one){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教学楼不存在");
+        }
+        return one;
 
     }
 }

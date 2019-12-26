@@ -39,6 +39,12 @@ public class UserController {
         return ResultUtil.Success("修改成功", object);
     }
 
+    @PostMapping("/get")
+    public Result get(@RequestHeader(Constatnt.uId)String uId, @RequestBody User user) {
+        Object object = userService.getUser(user);
+        return ResultUtil.Success("获取成功", object);
+    }
+
     @PostMapping("/list/{page}/{row}")
     public Result list(@RequestHeader(Constatnt.uId)String uId,@PathVariable("page")int page,@PathVariable("row")int row, @RequestBody User user) {
         Object object = userService.listUsers(page,row,user);
