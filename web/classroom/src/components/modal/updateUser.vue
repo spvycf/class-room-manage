@@ -126,8 +126,8 @@
 
       },
       save(){
-        this.userForm.createTime='';
-        this.userForm.updateTime='';
+/*        this.userForm.createTime='';
+        this.userForm.updateTime='';*/
         updateUserUrl(this.userForm)
         .then(res=>{
             this.$message.success({

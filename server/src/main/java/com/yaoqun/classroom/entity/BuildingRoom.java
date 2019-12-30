@@ -53,5 +53,8 @@ public class BuildingRoom implements Serializable {
 
     private String status;
 
+    @TableField(exist = false)
+    private String buildingNo;
+
 
 }

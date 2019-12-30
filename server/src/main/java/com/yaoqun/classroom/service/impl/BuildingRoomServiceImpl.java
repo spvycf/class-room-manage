@@ -2,20 +2,27 @@ package com.yaoqun.classroom.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
 import com.yaoqun.classroom.entity.BuildingRoom;
+import com.yaoqun.classroom.entity.BuildingType;
 import com.yaoqun.classroom.mapper.BuildingRoomMapper;
 import com.yaoqun.classroom.service.IBuildingRoomService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yaoqun.classroom.service.IBuildingTypeService;
 import com.yaoqun.classroom.service.ICourseArrangeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -25,6 +32,9 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
 
     @Autowired
     private ICourseArrangeService arrangeService;
+
+    @Autowired
+    private IBuildingTypeService buildingTypeService;
 
     @Override
     public boolean checkRoomIsClear(String buildingNo) {
@@ -116,7 +126,23 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
         if (StringUtils.isNotEmpty(room.getHasMedia())){
             lambda.eq(BuildingRoom::getHasMedia,room.getHasMedia());
         }
-        return page(page1,wrapper);
+        Map<String, String> map = new HashMap<>();
+        IPage<BuildingRoom> data = page(page1, wrapper);
+        List<BuildingRoom> records = data.getRecords();
+        for (BuildingRoom record : records) {
+            String buildingId = record.getBuildingId();
+            String bNo = map.get(buildingId);
+            if (StringUtils.isNotEmpty(bNo)){
+                record.setBuildingNo(bNo);
+                continue;
+            }else {
+                BuildingType type = buildingTypeService.getById(buildingId);
+                map.put(buildingId,type.getBuildingNo());
+                record.setBuildingNo(type.getBuildingNo());
+            }
+        }
+
+        return data;
 
     }
 

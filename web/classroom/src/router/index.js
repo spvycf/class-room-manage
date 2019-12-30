@@ -82,7 +82,7 @@ export default new Router({
       component: process
     },
     {
-      path: '/roomManage',
+      path: '/buildingManage/roomManage',
       name: 'roomManage',
       component: roomManage
     }

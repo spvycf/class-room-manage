@@ -26,5 +26,9 @@ export const getbuildingTypeUrl =(p) => post('/api/buildingType/get',p);
 export const updateBuildingUrl =(p) => post('/api/buildingType/update',p);
 export const saveBuildingUrl =(p) => post('/api/buildingType/save',p);
 
+//教室
+export const listRoomUrl =(page,row,p) => post('/api/buildingRoom/list/'+page+'/'+row,p);
+
+
 
 

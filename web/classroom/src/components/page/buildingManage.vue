@@ -74,7 +74,7 @@
         width="300">
         <template slot-scope="scope">
           <el-button  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>
-          <el-button  @click="handleSeeRoom(scope.row)" type="warning" size="small">添加教室</el-button>
+          <el-button  @click="handleSeeRoom(scope.row)" type="warning" size="small">教室详情</el-button>
           <el-button type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">删除</el-button>
           <el-button type="success" size="small" v-else @click="handleRelease(scope.row)">恢复</el-button>
         </template>
@@ -226,8 +226,13 @@
       reFresh(){
         this.reload();
       },
-      handleSeeRoom(id){
-        this.$router.replace('/roomManage');
+      handleSeeRoom(row){
+        this.$router.replace({
+          name:'roomManage',
+          params:{
+            id:row.id
+          }
+        });
       }
 
 
