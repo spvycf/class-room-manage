@@ -28,6 +28,13 @@ export const saveBuildingUrl =(p) => post('/api/buildingType/save',p);
 
 //教室
 export const listRoomUrl =(page,row,p) => post('/api/buildingRoom/list/'+page+'/'+row,p);
+export const saveRoomUrl =(p) => post('/api/buildingRoom/save',p);
+export const updateRoomUrl =(p) => post('/api/buildingRoom/update',p);
+export const deleteRoomUrl =(p) => post('/api/buildingRoom/delete',p);
+export const getRoomUrl =(p) => post('/api/buildingRoom/get',p);
+
+
+
 
 
 

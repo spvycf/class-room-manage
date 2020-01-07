@@ -67,6 +67,12 @@
         :formatter="statusFormat"
         width="150">
       </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="创建时间"
+          align="center"
+          width="200">
+      </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
@@ -119,6 +125,7 @@
         buildingNo:'',
         buildingName:'',
         status:'',
+        createTime:'',
         tableData:[],
         totalNum:0,
         size:0,

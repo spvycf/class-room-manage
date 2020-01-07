@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -52,6 +53,7 @@ public class BuildingTypeServiceImpl extends ServiceImpl<BuildingTypeMapper, Bui
         }
         buildingType.setStatus("0");
         buildingType.setId(IdWorker.get32UUID());
+        buildingType.setCreateTime(LocalDateTime.now());
         return save(buildingType);
 
 
@@ -115,6 +117,7 @@ public class BuildingTypeServiceImpl extends ServiceImpl<BuildingTypeMapper, Bui
         if (StringUtils.isNotEmpty(buildingType.getBuildingName())){
             lambda.like(BuildingType::getBuildingName,buildingType.getBuildingName());
         }
+        lambda.orderByDesc(BuildingType::getCreateTime);
         IPage<BuildingType> data = page(page1, wrapper);
         List<BuildingType> records = data.getRecords();
         for (BuildingType record : records) {

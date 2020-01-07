@@ -79,13 +79,10 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
         if (StringUtils.isEmpty(id)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教室id为空");
         }
-        String buildingNo = room.getBuildingId();
         String roomNO = room.getRoomNO();
         Integer roomSpace = room.getRoomSpace();
         String hasMedia = room.getHasMedia();
-        if (StringUtils.isEmpty(buildingNo)){
-            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教学楼未选择");
-        }
+
         if (StringUtils.isEmpty(roomNO)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教学编号为空");
         }
@@ -95,7 +92,9 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
         if (StringUtils.isEmpty(hasMedia)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"未选择是否有多媒体");
         }
-        checkRoomIsExist(buildingNo,roomNO,id);
+        BuildingRoom one = getById(id);
+
+        checkRoomIsExist(one.getBuildingNo(),roomNO,id);
         return updateById(room);
 
 
@@ -143,6 +142,16 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
         }
 
         return data;
+
+    }
+
+    @Override
+    public Object getBuildingRoom(BuildingRoom room) {
+        String id = room.getId();
+        if (StringUtils.isEmpty(id)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"教室id为空");
+        }
+        return getById(id);
 
     }
 

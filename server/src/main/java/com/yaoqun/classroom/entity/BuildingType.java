@@ -3,6 +3,8 @@ package com.yaoqun.classroom.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -38,6 +40,9 @@ public class BuildingType implements Serializable {
      */
 
     private String status;
+
+    @TableField("createTime")
+    private LocalDateTime createTime;
 
     @TableField(exist = false)
     private int num;

@@ -34,6 +34,12 @@ public class BuildingRoomController {
         return ResultUtil.Success("删除成功", object);
     }
 
+    @PostMapping("/get")
+    public Result get(@RequestBody BuildingRoom room) {
+        Object object = roomService.getBuildingRoom(room);
+        return ResultUtil.Success("获取成功", object);
+    }
+
     @PostMapping("/list/{page}/{row}")
     public Result list(@PathVariable("page")int page, @PathVariable("row")int row, @RequestBody BuildingRoom room) {
         Object object = roomService.listRooms(page,row,room);

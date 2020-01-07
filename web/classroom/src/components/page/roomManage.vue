@@ -1,14 +1,14 @@
 <template>
   <div>
 
-<!--    <AddBuildingType v-show="showModal" @on-cancel-add="cancelAdd" ref="addBuilding"></AddBuildingType>-->
+    <AddBuildingRoom v-show="showModal" @on-cancel-add="cancelAdd" ref="addBuildingRoom" v-bind:buildingId="buildingId"></AddBuildingRoom>
 
     <el-row :gutter="10">
       <el-col :span="4"><div class="grid-content bg-purple">
         教室编号:
       </div></el-col>
       <el-col :span="4" ><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingNo" placeholder="班级"></el-input>
+        <el-input class="heiget-input" v-model="roomNO" placeholder="编号"></el-input>
       </div></el-col>
 
       <el-col :span="4" style="padding-left: 95px">
@@ -16,7 +16,7 @@
           容量:
         </div></el-col>
       <el-col :span="4" style="padding-left: 40px"><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingName" placeholder="专业"></el-input>
+        <el-input class="heiget-input" v-model="roomSpace" placeholder="容量"></el-input>
       </div></el-col>
 
       <el-col :span="6" style="padding-left: 120px"><div class="grid-content bg-purple">
@@ -95,9 +95,7 @@
         width="300">
         <template slot-scope="scope">
           <el-button  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>
-          <el-button  @click="handleSeeRoom(scope.row)" type="warning" size="small">教室详情</el-button>
           <el-button type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">删除</el-button>
-          <el-button type="success" size="small" v-else @click="handleRelease(scope.row)">恢复</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -124,8 +122,18 @@
 
 <script>
   import {listRoomUrl} from '@/api/api';
+  import AddBuildingRoom from "../modal/AddBuildingRoom";
+  import {deleteRoomUrl} from "../../api/api";
 
   export default {
+
+    components: {AddBuildingRoom},
+    comments:{
+      'AddBuildingRoom':AddBuildingRoom
+
+    },
+    inject:['reload'],
+
     data() {
       return {
         types:[
@@ -140,9 +148,15 @@
         ],
 
         buildingId: '',
+        buildingNo: '',
+        roomNO: '',
+        roomSpace: '',
+        hasMedia: '',
         tableData:[],
         totalNum:0,
         size:0,
+        showModal:false
+
       }
     },
     created() {
@@ -162,6 +176,76 @@
       },
       hasMediaFormat(row,coloum){
         return row.hasMedia=='1'?'有':'无';
+      },
+      currentChangeHandle(val){
+        listRoomUrl(val,10,
+          {
+            'buildingId':this.buildingId,
+            'roomNO':this.roomNO,
+            'roomSpace':this.roomSpace,
+            'hasMedia':this.hasMedia
+          }
+        ).then(res=>{
+          let data = res.data.records;
+          this.tableData=data;
+          this.totalNum=res.data.total;
+          this.size=res.data.size;
+        });
+      },
+      handleUpdate(row){
+        this.$refs.addBuildingRoom.getRoom(row.id);
+
+      },
+      handleForbidden(row){
+        this.$confirm('确定删除该教室吗?', '删除教室 ', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          deleteRoomUrl (
+            {
+              'id':row.id
+            }
+          ).then(res => {
+            this.$message.success({
+              message: '删除成功',
+              center: true,
+            });
+            this.reload();
+          });
+        });
+      },
+      search(){
+        listRoomUrl(1,10,
+          {
+            'buildingId':this.buildingId,
+            'roomNO':this.roomNO,
+            'roomSpace':this.roomSpace,
+            'hasMedia':this.hasMedia
+          }
+        ).then(res=>{
+          let data = res.data.records;
+          this.tableData=data;
+          this.totalNum=res.data.total;
+          this.size=res.data.size;
+        });
+      },
+      cleanSearch(){
+        this.roomNO='';
+        this.roomSpace='';
+        this.hasMedia='';
+
+      },
+
+
+      reFresh(){
+        this.reload();
+      },
+      showAdd(){
+        this.showModal=true;
+      },
+      cancelAdd(){
+        this.showModal=false;
       },
 
     },

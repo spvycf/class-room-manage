@@ -16,4 +16,5 @@ public interface IBuildingRoomService extends IService<BuildingRoom> {
 
     Object listRooms(int page, int row, BuildingRoom room);
 
+    Object getBuildingRoom(BuildingRoom room);
 }
