@@ -9,6 +9,7 @@ import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
 import com.yaoqun.classroom.entity.CourseArrange;
 import com.yaoqun.classroom.entity.CourseArrangeDTO;
+import com.yaoqun.classroom.entity.CourseDTO;
 import com.yaoqun.classroom.mapper.CourseArrangeMapper;
 import com.yaoqun.classroom.service.ICourseArrangeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -17,8 +18,15 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -131,9 +139,61 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
     }
 
     @Override
-    public Object listCourses(int page, int row, CourseArrange course, String uId) {
-        Page<CourseArrangeDTO> page1 = new Page<>(page, row);
-        return  arrangeMapper.listCourses(page1,course);
+    public Object listCourses( CourseArrange course, String uId) {
+
+        //时间查询一周为佳
+        LocalDate date = course.getDate();
+        if (null==date) {
+            //当前时间的一周
+            date = LocalDate.now();
+        }
+        LocalDate monday = date.with(DayOfWeek.MONDAY);
+        LocalDate sunday = date.with(DayOfWeek.SUNDAY);
+        course.setStartDate(monday);
+        course.setEndDate(sunday);
+
+        List<CourseArrangeDTO> courses = arrangeMapper.listCourses(course);
+        Map<String, List<CourseArrangeDTO>> collect = courses.stream().collect(Collectors.groupingBy(CourseArrangeDTO::getType));
+        List<CourseArrangeDTO> everyDayCourse = collect.get("0");
+        List<CourseArrangeDTO> tempCourse = collect.get("8");
+        Map<LocalDate, List<CourseArrangeDTO>> tempDateCourses = null;
+        if (null!=tempCourse){
+            tempDateCourses  = tempCourse.stream().collect(Collectors.groupingBy(CourseArrangeDTO::getDate));
+        }
+
+
+        //准备组装
+        List<CourseDTO> result = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            CourseDTO dto = new CourseDTO();
+            LocalDate day =monday.plusDays(i);
+            List<CourseArrangeDTO> list = new ArrayList<>();
+            //每天的
+            if (null!=everyDayCourse){
+                list.addAll(everyDayCourse);
+            }
+            //自己周的
+            List<CourseArrangeDTO> self = collect.get(i + 1+"");
+            if (null!=self){
+                list.addAll(self);
+            }
+            //临时的
+            if (null!=tempDateCourses){
+                List<CourseArrangeDTO> temp = tempDateCourses.get(day);
+                if (null!=temp){
+                    list.addAll(temp);
+                }
+            }
+            dto.setDate(day);
+            dto.setCourses(list);
+            result.add(dto);
+
+
+        }
+
+        return result;
+
+
 
 
     }

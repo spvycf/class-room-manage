@@ -3,6 +3,7 @@ package com.yaoqun.classroom.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,7 +12,7 @@ import java.time.LocalTime;
  * @date 2019/12/14 10:32
  */
 @Data
-public class CourseArrangeDTO {
+public class CourseArrangeDTO implements Comparable<CourseArrangeDTO>, Serializable {
 
     private static final long serialVersionUID = -6078778226379468841L;
 
@@ -83,4 +84,8 @@ public class CourseArrangeDTO {
     private String phone;
     private String uType;
 
+    @Override
+    public int compareTo(CourseArrangeDTO o) {
+        return this.startTime.isBefore(o.getStartTime())==true?-1:1;
+    }
 }

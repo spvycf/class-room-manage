@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/classroom/course-arrange")
+@RequestMapping("/course")
 public class CourseArrangeController {
 
     @Autowired
@@ -42,9 +42,9 @@ public class CourseArrangeController {
     }
 
 
-    @PostMapping("/list/{page}/{row}")
-    public Result list(@RequestHeader(Constatnt.uId)String uId,@PathVariable("page")int page, @PathVariable("row")int row, @RequestBody CourseArrange  course) {
-        Object object = arrangeService.listCourses(page,row,course,uId);
+    @PostMapping("/list")
+    public Result list(@RequestHeader(Constatnt.uId)String uId, @RequestBody CourseArrange  course) {
+        Object object = arrangeService.listCourses(course,uId);
         return ResultUtil.Success("查询成功", object);
     }
 }

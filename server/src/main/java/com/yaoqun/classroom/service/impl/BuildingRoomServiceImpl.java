@@ -122,6 +122,10 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
         if (StringUtils.isNotEmpty(room.getRoomNO())){
             lambda.like(BuildingRoom::getRoomNO,room.getRoomNO());
         }
+        Integer roomSpace = room.getRoomSpace();
+        if (null!=roomSpace){
+            lambda.eq(BuildingRoom::getRoomSpace,roomSpace);
+        }
         if (StringUtils.isNotEmpty(room.getHasMedia())){
             lambda.eq(BuildingRoom::getHasMedia,room.getHasMedia());
         }
@@ -140,7 +144,6 @@ public class BuildingRoomServiceImpl extends ServiceImpl<BuildingRoomMapper, Bui
                 record.setBuildingNo(type.getBuildingNo());
             }
         }
-
         return data;
 
     }

@@ -75,11 +75,19 @@ public class CourseArrange implements Serializable {
 
     private String userId;
 
+    @TableField(exist = false)
+    private String userName;
     /**
      * 0正常1失效
      */
 
     private String status;
+
+    @TableField(exist = false)
+    private LocalDate startDate;
+
+    @TableField(exist = false)
+    private LocalDate endDate;
 
 
 }

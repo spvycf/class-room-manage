@@ -16,5 +16,5 @@ public interface ICourseArrangeService extends IService<CourseArrange> {
 
     Object returnCourseArrange(CourseArrange course);
 
-    Object listCourses(int page, int row, CourseArrange course, String uId);
+    Object listCourses(CourseArrange course, String uId);
 }

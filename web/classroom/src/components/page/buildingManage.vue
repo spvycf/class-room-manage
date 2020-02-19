@@ -9,7 +9,7 @@
         编号:
       </div></el-col>
       <el-col :span="4" ><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingNo" placeholder="班级"></el-input>
+        <el-input class="heiget-input" v-model="buildingNo" placeholder="教学楼编号"></el-input>
       </div></el-col>
 
       <el-col :span="4" style="padding-left: 115px">
@@ -17,7 +17,7 @@
           名称:
         </div></el-col>
       <el-col :span="4" style="padding-left: 75px"><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingName" placeholder="专业"></el-input>
+        <el-input class="heiget-input" v-model="buildingName" placeholder="教学楼名称"></el-input>
       </div></el-col>
 
 

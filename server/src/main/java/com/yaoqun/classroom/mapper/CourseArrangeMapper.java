@@ -6,8 +6,10 @@ import com.yaoqun.classroom.entity.CourseArrange;
 import com.yaoqun.classroom.entity.CourseArrangeDTO;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 
 public interface CourseArrangeMapper extends BaseMapper<CourseArrange> {
 
-    Page<CourseArrangeDTO> listCourses(Page<CourseArrangeDTO> page1, @Param("course") CourseArrange course);
+    List<CourseArrangeDTO> listCourses(@Param("course") CourseArrange course);
 }

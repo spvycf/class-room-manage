@@ -11,11 +11,35 @@
             left join building_room r on c.roomId=r.id
             left join building_type t on t.id=r.buildingId
             left join user u on u.id=c.userId
-        where 1=1
+        where  c.status='0'
         <if test="course.userId!=null and course.userId!=''">
             and   c.userId=#{course.userId}
         </if>
-        order by c.createTime desc
+        <if test="course.userName!=null and course.userName!=''">
+            and   u.userName=#{course.userName}
+        </if>
+        <if test="course.userId!=null and course.userId!=''">
+            and   c.userId=#{course.userId}
+        </if>
+        <if test="course.startDate!=null ">
+            and   c.date &gt;=#{course.startDate}
+        </if>
+        <if test="course.endDate!=null">
+            and   c.date &lt;=#{course.endDate}
+        </if>
+        and c.type = 8
+        union
+        select c.*,
+        r.roomNo as roomNo,
+        t.buildingNo as buildingNo,t.buildingName as buildingName,
+        u.userName as userName,u.profession as profession,u.classNO as classNO,u.phone as phone,u.type as uType
+        from course_arrange c
+        left join building_room r on c.roomId=r.id
+        left join building_type t on t.id=r.buildingId
+        left join user u on u.id=c.userId
+        where c.type in (0,1,2,3,4,5,6,7) and c.status='0'
+
+        /*order by c.date,c.startTime desc*/
 
 
     </select>

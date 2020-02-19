@@ -94,6 +94,7 @@
         align="center"
         width="300">
         <template slot-scope="scope">
+          <el-button  @click="courseDetail(scope.row)" type="info" size="small">课程安排</el-button>
           <el-button  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>
           <el-button type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">删除</el-button>
         </template>
@@ -247,6 +248,15 @@
       cancelAdd(){
         this.showModal=false;
       },
+      courseDetail(row){
+        this.$router.push({
+          path: '/courseManage',
+          query: {
+            id:row.id
+          }
+        })
+
+      }
 
     },
   }

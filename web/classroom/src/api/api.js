@@ -34,6 +34,9 @@ export const deleteRoomUrl =(p) => post('/api/buildingRoom/delete',p);
 export const getRoomUrl =(p) => post('/api/buildingRoom/get',p);
 
 
+//课程
+export const listCourseUrl =(p) => post('/api/course/list/',p);
+
 
 
 
