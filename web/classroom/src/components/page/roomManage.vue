@@ -44,7 +44,7 @@
       </el-col>
 
     </el-row>
-    <el-button type="primary"  @click="showAdd">新增教室</el-button>
+    <el-button v-if="isAdmin()" type="primary"  @click="showAdd">新增教室</el-button>
 
 
 
@@ -94,9 +94,9 @@
         align="center"
         width="300">
         <template slot-scope="scope">
-          <el-button  @click="courseDetail(scope.row)" type="info" size="small">课程安排</el-button>
-          <el-button  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>
-          <el-button type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">删除</el-button>
+          <el-button  @click="courseDetail(scope.row)" type="primary" size="small">课程安排</el-button>
+          <el-button v-if="isAdmin()"  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>
+          <el-button v-show="isAdmin()" type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -252,10 +252,14 @@
         this.$router.push({
           path: '/courseManage',
           query: {
-            id:row.id
+            roomId:row.id
           }
         })
 
+      },
+      isAdmin(){
+        let type = window.localStorage.getItem('type');
+        return (type=='0');
       }
 
     },

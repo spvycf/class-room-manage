@@ -32,7 +32,7 @@ public class CourseArrangeController {
     @PostMapping("/apply")
     public Result apply(@RequestBody CourseArrange course) {
         Object object = arrangeService.applyCourseArrange(course);
-        return ResultUtil.Success("取消成功", object);
+        return ResultUtil.Success("处理成功", object);
     }
 
     @PostMapping("/return")
@@ -45,6 +45,13 @@ public class CourseArrangeController {
     @PostMapping("/list")
     public Result list(@RequestHeader(Constatnt.uId)String uId, @RequestBody CourseArrange  course) {
         Object object = arrangeService.listCourses(course,uId);
+        return ResultUtil.Success("查询成功", object);
+    }
+
+    @PostMapping("/process/{page}/{row}")
+    public Result process(@RequestHeader(Constatnt.uId)String uId,
+                          @PathVariable("page")int page, @PathVariable("row")int row, @RequestBody CourseArrange  course) {
+        Object object = arrangeService.processCourses(course,uId,page,row);
         return ResultUtil.Success("查询成功", object);
     }
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yaoqun.classroom.common.ResultCode;
 import com.yaoqun.classroom.common.ResultException;
 import com.yaoqun.classroom.entity.CourseArrange;
@@ -12,18 +13,17 @@ import com.yaoqun.classroom.entity.CourseArrangeDTO;
 import com.yaoqun.classroom.entity.CourseDTO;
 import com.yaoqun.classroom.mapper.CourseArrangeMapper;
 import com.yaoqun.classroom.service.ICourseArrangeService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yaoqun.classroom.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,6 +36,8 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
 
     @Autowired
     private CourseArrangeMapper arrangeMapper;
+    @Autowired
+    private IUserService userService;
 
     @Override
     public boolean checkExistCource(String id) {
@@ -77,9 +79,16 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
         if (null == endTime) {
             throw new ResultException(ResultCode.PARAMER_EXCEPTION, "结束时间未选择");
         }
+        //status判定
+        String status= userService.checkUserTpye(uId);
+
         checkTime(roomId, type, date, startTime, endTime);
         //检测无冲突准备保存
         course.setId(uuid);
+        course.setUserId(uId);
+        course.setStatus(status);
+
+
         return save(course);
 
 
@@ -110,7 +119,7 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
         //审批
         String id = course.getId();
         String status = course.getStatus();
-        if (!"0".equals(status) || !"3".equals(status) || "5".equals(status)){
+        if (!"0".equals(status) && !"3".equals(status) &&!"5".equals(status)){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"审批状态非法");
         }
         CourseArrange one = getById(id);
@@ -133,7 +142,7 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
         if (null==one){
             throw new ResultException(ResultCode.PARAMER_EXCEPTION,"课程不存在");
         }
-        one.setStatus("4");
+        one.setStatus("5");
 
         return updateById(one);
     }
@@ -151,6 +160,7 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
         LocalDate sunday = date.with(DayOfWeek.SUNDAY);
         course.setStartDate(monday);
         course.setEndDate(sunday);
+        course.setStatus("0");
 
         List<CourseArrangeDTO> courses = arrangeMapper.listCourses(course);
         Map<String, List<CourseArrangeDTO>> collect = courses.stream().collect(Collectors.groupingBy(CourseArrangeDTO::getType));
@@ -184,14 +194,44 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
                     list.addAll(temp);
                 }
             }
+            //排个序
+            List<CourseArrangeDTO> collect1 = list.stream().sorted(Comparator.comparing(CourseArrangeDTO::getStartTime)).collect(Collectors.toList());
             dto.setDate(day);
-            dto.setCourses(list);
+            dto.setCourses(collect1);
             result.add(dto);
 
 
         }
 
         return result;
+
+
+
+
+    }
+
+    @Override
+    public Object processCourses(CourseArrange course, String uId, int page, int row) {
+        Page<CourseArrange> page1 = new Page<>(page, row);
+        String status = course.getStatus();
+        String roomId = course.getRoomId();
+        String userId = course.getUserId();
+        QueryWrapper<CourseArrange> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<CourseArrange> lambda = wrapper.lambda();
+        if (StringUtils.isNotEmpty(status)){
+            lambda.eq(CourseArrange::getStatus,status);
+        }
+        if (StringUtils.isNotEmpty(roomId)){
+            lambda.eq(CourseArrange::getRoomId,roomId);
+        }
+        if (StringUtils.isNotEmpty(userId)){
+            lambda.eq(CourseArrange::getUserId,userId);
+        }
+        lambda.orderByDesc(CourseArrange::getCreateTime);
+
+        Page<CourseArrangeDTO> date= arrangeMapper.processCourses(page1,course);
+
+        return date;
 
 
 
@@ -217,11 +257,13 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
         }
         lambda.in(CourseArrange::getType, "0", dayOfWeek)
                 .le(CourseArrange::getEndTime, startTime)
+                .eq(CourseArrange::getRoomId,roomId)
                 .orderByDesc(CourseArrange::getEndTime)
                 .last("limit 1");
 
         lambda2.in(CourseArrange::getType, "0", dayOfWeek)
                 .le(CourseArrange::getStartTime, endTime)
+                .eq(CourseArrange::getRoomId,roomId)
                 .orderByDesc(CourseArrange::getStartTime)
                 .last("limit 1");
 
@@ -237,12 +279,12 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
             if (after || before) {
                 throw new ResultException(ResultCode.PARAMER_EXCEPTION, "课程时间存在冲突，可预约的课程时间为" + endTime1 + "--" + startTime1);
             }
-        } else if (startCourse == null) {
+        } else if (startCourse == null && null!=endCourse) {
             LocalTime startTime1 = endCourse.getStartTime();
             if (endTime.isAfter(startTime1)) {
                 throw new ResultException(ResultCode.PARAMER_EXCEPTION, "课程时间存在冲突，下一课程的开始时间为" + startTime1);
             }
-        } else {
+        } else if (startCourse != null && null==endCourse) {
             LocalTime endTime1 = startCourse.getEndTime();
             if (endTime1.isAfter(startTime)) {
                 throw new ResultException(ResultCode.PARAMER_EXCEPTION, "课程时间存在冲突，上一课程的结束时间为" + endTime1);

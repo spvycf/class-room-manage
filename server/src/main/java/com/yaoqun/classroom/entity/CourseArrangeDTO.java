@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
@@ -59,7 +60,6 @@ public class CourseArrangeDTO implements Comparable<CourseArrangeDTO>, Serializa
      * 结束时间
      */
     @TableField("endTime")
-
     private LocalTime endTime;
 
     /**
@@ -83,6 +83,8 @@ public class CourseArrangeDTO implements Comparable<CourseArrangeDTO>, Serializa
     private String classNO;
     private String phone;
     private String uType;
+
+    private LocalDateTime createTime;
 
     @Override
     public int compareTo(CourseArrangeDTO o) {

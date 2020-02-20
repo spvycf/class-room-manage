@@ -52,10 +52,16 @@
 
 
 
-      <el-menu-item index="/process" v-if="isAdmin()">
-        <i class="el-icon-s-grid"></i>
-        <span slot="title">借还审批</span>
-      </el-menu-item>
+      <el-submenu index="4" v-if="isAdmin()">
+        <template slot="title">
+          <i class="el-icon-s-grid"></i>
+          <span slot="title">借还审批</span>
+        </template>
+
+
+        <el-menu-item index="/process"><i class="el-icon-s-grid"></i>申请处理</el-menu-item>
+        <el-menu-item index="/returnPage"><i class="el-icon-s-grid"></i>归还处理</el-menu-item>
+      </el-submenu>
 
 
 

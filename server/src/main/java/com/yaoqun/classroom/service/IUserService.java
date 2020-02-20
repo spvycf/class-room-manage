@@ -17,4 +17,6 @@ public interface IUserService extends IService<User> {
     Object changeStatus(User user);
 
     Object getUser(User user);
+
+    String checkUserTpye(String uId);
 }

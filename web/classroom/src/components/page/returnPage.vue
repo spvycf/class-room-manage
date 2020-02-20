@@ -4,31 +4,30 @@
         <AddBuildingRoom v-show="showAddRoomModal" @on-close="cancel" ref="updateUser"></AddBuildingRoom>
     <AddBuildingType v-show="showModal" @on-cancel-add="cancelAdd" ref="addBuilding"></AddBuildingType>-->
 
-<!--
+    <!--
+        <el-row :gutter="10">
+          <el-col :span="4"><div class="grid-content bg-purple">
+            编号:
+          </div></el-col>
+          <el-col :span="4" ><div class="grid-content bg-purple-light">
+            <el-input class="heiget-input" v-model="buildingNo" placeholder="教学楼编号"></el-input>
+          </div></el-col>
+
+          <el-col :span="4" style="padding-left: 115px">
+            <div class="grid-content bg-purple heightd">
+              名称:
+            </div></el-col>
+          <el-col :span="4" style="padding-left: 75px"><div class="grid-content bg-purple-light">
+            <el-input class="heiget-input" v-model="buildingName" placeholder="教学楼名称"></el-input>
+          </div></el-col>
+    -->
+
     <el-row :gutter="10">
-      <el-col :span="4"><div class="grid-content bg-purple">
-        编号:
-      </div></el-col>
-      <el-col :span="4" ><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingNo" placeholder="教学楼编号"></el-input>
-      </div></el-col>
 
-      <el-col :span="4" style="padding-left: 115px">
-        <div class="grid-content bg-purple heightd">
-          名称:
-        </div></el-col>
-      <el-col :span="4" style="padding-left: 75px"><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingName" placeholder="教学楼名称"></el-input>
-      </div></el-col>
--->
 
-    <el-row :gutter="10">
-
-      <el-col :span="4" style="padding-left: 10px;padding-right: 75px;">
-        <el-button type="primary"   style="height: 36px" >申请教室处理</el-button>
+      <el-col :span="4" style="padding-left: 20px">
+        <el-button type="primary"   style="height: 36px">归还教室处理</el-button>
       </el-col>
-
-
 
     </el-row>
     <!--    <el-button type="primary"  @click="showAdd">新增教学楼</el-button>-->
@@ -101,7 +100,7 @@
         <template slot-scope="scope">
           <!--         <el-button  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>-->
           <el-button  @click="handlePassRoom(scope.row)" type="primary" size="small">通过</el-button>
-          <el-button  @click="handleDeainedRoom(scope.row)" type="warning" size="small">拒绝</el-button>
+          <!--<el-button  @click="handleDeainedRoom(scope.row)" type="warning" size="small">拒绝</el-button>-->
           <!--          <el-button type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">删除</el-button>
                     <el-button type="success" size="small" v-else @click="handleRelease(scope.row)">恢复</el-button>-->
         </template>
@@ -128,14 +127,12 @@
 </template>
 
 <script>
-
   import {listProcessUrl} from '@/api/api';
-  import {applyUrl} from '@/api/api';
+  import {returnUrl} from '@/api/api';
 
   export default {
-
     inject:['reload'],
-    name:'process',
+    name:'returnPage',
     data(){
       return{
         id:'',
@@ -154,14 +151,13 @@
     created() {
       listProcessUrl(1,10,
         {
-          'status':'2',
+          'status':'4',
 
         }
       ).then(res=>{
         this.tableData=res.data.records;
         this.totalNum=res.data.total;
         this.size=res.data.size;
-
 
       });
 
@@ -204,7 +200,7 @@
       currentChangeHandle(val){
         listProcessUrl(val,10,
           {
-            'status':'2'
+            'status':'4'
 
           }
         ).then(res=>{
@@ -218,10 +214,10 @@
 
 
       handlePassRoom(row){
-        applyUrl(
+        returnUrl(
           {
-            'id':row.id,
-            'status':'0'
+            'id':row.id
+
           }
         ).then(res => {
           this.$message.success({
@@ -235,7 +231,7 @@
         applyUrl(
           {
             'id':row.id,
-            'status':'3'
+            'status':'5'
           }
         ).then(res => {
           this.$message.success({

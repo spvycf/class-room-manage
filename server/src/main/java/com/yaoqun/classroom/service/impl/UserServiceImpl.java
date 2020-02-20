@@ -193,6 +193,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     }
 
+    @Override
+    public String checkUserTpye(String uId) {
+        User one = getById(uId);
+        if (null==one){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"用户信息为空");
+        }
+        return "0".equals(one.getType())?"0":"2";
+
+
+    }
+
     private void checkLoginNo(String loginNo) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(User::getLoginNo,loginNo);

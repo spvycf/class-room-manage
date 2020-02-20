@@ -99,7 +99,7 @@
         tt:'新增教室',
         addBuildingRoomForm:{
           id:'',
-          //buildingId:'',
+          buildingId:'',
           roomNO:'',
           roomSpace:'',
           hasMedia:''

@@ -12,6 +12,8 @@ import userManage from '@/components/page/userManage'
 import noticeManage from '@/components/page/noticeManage'
 import process from '@/components/page/process'
 import roomManage from '@/components/page/roomManage'
+import returnPage from '@/components/page/returnPage'
+import my from '@/components/page/my'
 
 
 
@@ -82,10 +84,20 @@ export default new Router({
       component: process
     },
     {
+      path: '/returnPage',
+      name: 'returnPage',
+      component: returnPage
+    },
+    {
       path: '/buildingManage/roomManage',
       name: 'roomManage',
       component: roomManage
-    }
+    },
+    {
+      path: '/my',
+      name: 'my',
+      component: my
+    },
 
 
   ]

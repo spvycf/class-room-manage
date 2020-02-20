@@ -13,7 +13,8 @@
         placeholder="选择周">
       </el-date-picker>
         <el-button type="primary"   @click="search" style="width:50px;height:38px" >查询</el-button>
-        <el-button type="primary"   @click="showAddCourse" style="width:80px;height:38px" >新增课程</el-button>
+        <el-button type="primary"   v-if="isAdmin()" @click="showAddCourse" style="width:80px;height:38px" >新增课程</el-button>
+        <el-button type="primary"   v-else @click="showAddCourse" style="width:80px;height:38px" >申请课程</el-button>
       </div>
     <div class="table-wrapper">
       <div class="tabel-container">
@@ -75,7 +76,7 @@
       return{
         showModal:false,
         weekTime: '',
-        id:'',
+        roomId:'',
         classTableData: {
           lessons: [
             '上午',
@@ -107,9 +108,9 @@
         }
     },
     created() {
-      this.id=this.$route.query.id;
+      this.roomId=this.$route.query.roomId;
       listCourseUrl({
-        'id':this.id
+        'roomId':this.roomId
       })
         .then(res=>{
             this.courseDate=res.data;
@@ -121,7 +122,7 @@
     methods:{
       listCs(){
         listCourseUrl({
-          'id':this.id
+          'roomId':this.roomId
         })
         .then(res=>{
           this.courseDate=res.data;
@@ -134,7 +135,7 @@
       },
       search(){
         listCourseUrl({
-          'id':this.id,
+          'roomId':this.roomId,
           'date':this.weekTime
         })
           .then(res=>{
@@ -148,6 +149,10 @@
       showAddCourse(){
         this.showModal=true;
       },
+      isAdmin(){
+        let type = window.localStorage.getItem('type');
+        return (type=='0');
+      }
 
 
     },

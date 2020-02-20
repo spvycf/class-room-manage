@@ -68,6 +68,9 @@ public class CourseArrange implements Serializable {
 
     private LocalTime endTime;
 
+    @TableField("createTime")
+    private LocalDateTime createTime;
+
     /**
      * 所属人
      */

@@ -4,28 +4,29 @@
       <div class="modal-header">
         <h3>{{tt}}</h3>
       </div>
+
       <div class="modal-body">
+        <input v-model="roomId" v-show="true"></input>
+        <p>{{roomId}}1</p>
         <el-form  ref="addNoticeForm" :model="addCourseForm" label-width="80px" @submit.native.prevent >
 
 
-          <input v-model="addCourseForm.id" v-show="false"></input>
 
 
-
-          <el-form-item label="课程名称" prop="title"
+          <el-form-item label="课程名称" prop="courseName"
                         :rules="[
       { required: true, message: '名称不能为空'}
     ]"
           >
-            <el-input v-model="addCourseForm.title"
+            <el-input v-model="addCourseForm.courseName"
                       maxlength="20"
                       show-word-limit
             ></el-input>
           </el-form-item>
 
-          <el-form-item label="课程时间" prop="type"
+          <el-form-item label="课程计划" prop="type"
                         :rules="[
-      { required: true, message: '课程时间不能为空'}
+      { required: true, message: '课程计划不能为空'}
     ]"
           >
             <el-radio v-model="addCourseForm.type" label="0" @change="typeChange">每天</el-radio>
@@ -39,14 +40,44 @@
             <el-radio v-model="addCourseForm.type" label="8" @change="typeChange">自定义</el-radio>
 
           </el-form-item>
-          <div class="block" v-show="isShow">
-            <span class="demonstration"></span>
-            <el-date-picker
-              v-model="value1"
-              type="datetime"
-              placeholder="选择日期时间">
-            </el-date-picker>
-          </div>
+
+
+
+
+          <el-form-item v-show="isShow" label="课程计划" prop="date"
+                        :rules="[
+      { required: true, message: '时间不能为空'}
+    ]"
+          >
+            <div class="block" >
+              <el-date-picker
+                v-model="addCourseForm.date"
+                type="date"
+                value-format="yyyy-MM-dd"
+                :picker-options="pickerOptions"
+                placeholder="选择日期">
+              </el-date-picker>
+
+            </div>
+          </el-form-item>
+
+
+          <el-form-item label="课程时间" prop="time"
+                        :rules="[
+      { required: true, message: '时间不能为空'}
+    ]"
+          >
+            <el-time-picker
+              is-range
+              v-model="addCourseForm.time"
+              value-format="HH:mm:ss"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+              placeholder="选择时间范围">
+            </el-time-picker>
+          </el-form-item>
+
 
 
 
@@ -58,7 +89,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-close" @click="cancel">取消</button>
-        <button type="button" class="btn-confirm" @click="saveNotice">提交</button>
+        <button type="button" class="btn-confirm" @click="saveCourse">提交</button>
       </div>
     </div>
 
@@ -68,39 +99,57 @@
 
 
 <script>
-  import {saveNoticeUrl} from '@/api/api';
-  import {updateNoticeUrl} from '@/api/api';
-  import {getNoticeUrl} from '@/api/api';
+  import {saveCourseUrl} from '@/api/api';
+
 
 
   export default {
-    name: 'AddNotice',
-    props: {
-    },
+    name: 'addCourse',
+    props: [
+      "roomId"
+    ],
     data() {
       return {
         tt:'新增课程',
+        //roomId:'',
         addCourseForm:{
-          id:'',
-          title:'',
+          courseName:'',
           type:'',
+          date:'',
+          time:'',
+          roomId:''
 
         },
         isShow:false,
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() < Date.now() - 24 * 60 * 60 * 1000
+          }
+        }
       }
     },
     methods: {
       cancel() {
         this.addCourseForm.id="";
-        this.addCourseForm.title="";
-        this.addCourseForm.content="";
+        this.addCourseForm.courseName="";
+        this.addCourseForm.type="";
         this.$emit('on-cancel');
       },
-      saveNotice(){
-        let updateId = this.addCourseForm.id;
-        if (Object.keys(updateId).length==0){
+      saveCourse(){
+         this.addCourseForm.roomId=this.roomId;
+
+
           //新增
-          saveNoticeUrl(this.addCourseForm)
+          saveCourseUrl({
+            'roomId':this.addCourseForm.roomId,
+            'courseName':this.addCourseForm.courseName,
+            'type':this.addCourseForm.type,
+            'date':this.addCourseForm.date,
+            'startTime':this.addCourseForm.time[0],
+            'endTime':this.addCourseForm.time[1]
+
+
+          })
             .then(res=>{
               this.$message.success({
                 message: '保存成功',
@@ -110,38 +159,11 @@
               this.$parent.reFresh();
             });
 
-        }else {
-          //编辑
-          updateNoticeUrl(this.addCourseForm)
-            .then(res=>{
-              this.$message.success({
-                message: '修改成功',
-                center:true,
-              });
-              this.cancel();
-              this.$parent.reFresh();
-            });
-
-
-        }
-
-      },
-      //get
-      getNotice(id){
-        this.tt='编辑课程',
-          getNoticeUrl({'id':id})
-            .then(res=>{
-              this.addCourseForm.id=res.data.id;
-              this.addCourseForm.title=res.data.title;
-              this.addCourseForm.content=res.data.content;
-              this.$parent.open();
-
-            });
-
-
 
 
       },
+
+
       typeChange(val){
         this.isShow=false;
         if ('8'===val){

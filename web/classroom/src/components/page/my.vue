@@ -4,29 +4,26 @@
         <AddBuildingRoom v-show="showAddRoomModal" @on-close="cancel" ref="updateUser"></AddBuildingRoom>
     <AddBuildingType v-show="showModal" @on-cancel-add="cancelAdd" ref="addBuilding"></AddBuildingType>-->
 
-<!--
+    <!--
+        <el-row :gutter="10">
+          <el-col :span="4"><div class="grid-content bg-purple">
+            编号:
+          </div></el-col>
+          <el-col :span="4" ><div class="grid-content bg-purple-light">
+            <el-input class="heiget-input" v-model="buildingNo" placeholder="教学楼编号"></el-input>
+          </div></el-col>
+
+          <el-col :span="4" style="padding-left: 115px">
+            <div class="grid-content bg-purple heightd">
+              名称:
+            </div></el-col>
+          <el-col :span="4" style="padding-left: 75px"><div class="grid-content bg-purple-light">
+            <el-input class="heiget-input" v-model="buildingName" placeholder="教学楼名称"></el-input>
+          </div></el-col>
+    -->
+
     <el-row :gutter="10">
-      <el-col :span="4"><div class="grid-content bg-purple">
-        编号:
-      </div></el-col>
-      <el-col :span="4" ><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingNo" placeholder="教学楼编号"></el-input>
-      </div></el-col>
 
-      <el-col :span="4" style="padding-left: 115px">
-        <div class="grid-content bg-purple heightd">
-          名称:
-        </div></el-col>
-      <el-col :span="4" style="padding-left: 75px"><div class="grid-content bg-purple-light">
-        <el-input class="heiget-input" v-model="buildingName" placeholder="教学楼名称"></el-input>
-      </div></el-col>
--->
-
-    <el-row :gutter="10">
-
-      <el-col :span="4" style="padding-left: 10px;padding-right: 75px;">
-        <el-button type="primary"   style="height: 36px" >申请教室处理</el-button>
-      </el-col>
 
 
 
@@ -53,12 +50,7 @@
         label="教学楼名称"
         width="200">
       </el-table-column>
-      <el-table-column
-        prop="userName"
-        label="用户名称"
-        align="center"
-        width="150">
-      </el-table-column>
+
       <el-table-column
         prop="courseName"
         label="课程名称"
@@ -100,8 +92,8 @@
         width="300">
         <template slot-scope="scope">
           <!--         <el-button  @click="handleUpdate(scope.row)" type="info" size="small">编辑</el-button>-->
-          <el-button  @click="handlePassRoom(scope.row)" type="primary" size="small">通过</el-button>
-          <el-button  @click="handleDeainedRoom(scope.row)" type="warning" size="small">拒绝</el-button>
+          <el-button  @click="handleCancelRoom(scope.row)" type="primary" size="small" v-if="scope.row.status==='2'">取消申请</el-button>
+          <el-button  @click="handleReturnRoom(scope.row)" type="warning" size="small" v-if="scope.row.status==='0'">归还教室</el-button>
           <!--          <el-button type="danger" size="small" v-if="scope.row.status=='0'" @click="handleForbidden(scope.row)">删除</el-button>
                     <el-button type="success" size="small" v-else @click="handleRelease(scope.row)">恢复</el-button>-->
         </template>
@@ -130,7 +122,8 @@
 <script>
 
   import {listProcessUrl} from '@/api/api';
-  import {applyUrl} from '@/api/api';
+  import {cancelUrl} from '@/api/api';
+  import {returnUrl} from '@/api/api';
 
   export default {
 
@@ -154,7 +147,7 @@
     created() {
       listProcessUrl(1,10,
         {
-          'status':'2',
+          'userId':window.localStorage.getItem("token")
 
         }
       ).then(res=>{
@@ -170,10 +163,18 @@
     },
     methods:{
       statusFormat(row,coloum){
-        if (row.status==='2'){
+        if (row.status==='0'){
+          return '申请已通过';
+        }else if (row.status==='1'){
+          return '申请已取消';
+        }else if (row.status==='2'){
           return '申请待通过';
+        }else if (row.status==='3'){
+          return '申请被拒绝';
         }else if (row.status==='4'){
           return '归还待通过';
+        }else if (row.status==='5'){
+          return '归还已通过';
         }
 
 
@@ -200,11 +201,12 @@
         }
 
       },
+
       //main
       currentChangeHandle(val){
         listProcessUrl(val,10,
           {
-            'status':'2'
+            'userId':window.localStorage.getItem("token")
 
           }
         ).then(res=>{
@@ -217,29 +219,27 @@
 
 
 
-      handlePassRoom(row){
-        applyUrl(
+      handleCancelRoom(row){
+        cancelUrl(
           {
-            'id':row.id,
-            'status':'0'
+            'id':row.id
           }
         ).then(res => {
           this.$message.success({
-            message: '通过成功',
+            message: '取消成功',
             center: true,
           });
           this.reload();
         });
       },
-      handleDeainedRoom(row){
-        applyUrl(
+      handleReturnRoom(row){
+        returnUrl(
           {
-            'id':row.id,
-            'status':'3'
+            'id':row.id
           }
         ).then(res => {
           this.$message.success({
-            message: '已拒绝申请',
+            message: '归还申请成功',
             center: true,
           });
           this.reload();
