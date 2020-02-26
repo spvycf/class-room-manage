@@ -238,6 +238,15 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
 
     }
 
+    @Override
+    public Object deleteCourseArrange(CourseArrange course) {
+        String id = course.getId();
+        if (StringUtils.isEmpty(id)){
+            throw new ResultException(ResultCode.PARAMER_EXCEPTION,"id为空");
+        }
+        return removeById(id);
+    }
+
 
     private void checkTime(String roomId, String type, LocalDate date, LocalTime startTime, LocalTime endTime) {
         QueryWrapper<CourseArrange> wrapper = new QueryWrapper<>();
@@ -269,15 +278,25 @@ public class CourseArrangeServiceImpl extends ServiceImpl<CourseArrangeMapper, C
 
         CourseArrange startCourse = getOne(wrapper);
         CourseArrange endCourse = getOne(wrapper2);
+
+
         //比较空档期
         if (null != startCourse && null != endCourse) {
             //比较中间的差值空间
             LocalTime endTime1 = startCourse.getEndTime();
             LocalTime startTime1 = endCourse.getStartTime();
+            if (startCourse.getId().equals(endCourse.getId())){
+                if (startTime.isBefore(endTime1)){
+                    throw new ResultException(ResultCode.PARAMER_EXCEPTION, "课程时间存在冲突，上一课程的结束时间为" + endTime1);
+
+                }
+
+            }else {
             boolean after = endTime.isAfter(startTime1);
             boolean before = endTime1.isAfter(startTime);
             if (after || before) {
                 throw new ResultException(ResultCode.PARAMER_EXCEPTION, "课程时间存在冲突，可预约的课程时间为" + endTime1 + "--" + startTime1);
+            }
             }
         } else if (startCourse == null && null!=endCourse) {
             LocalTime startTime1 = endCourse.getStartTime();

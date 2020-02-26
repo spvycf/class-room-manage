@@ -43,7 +43,7 @@
           <el-submenu  index="3" >
             <template slot="title"><i class="el-icon-school"></i>教室管理</template>
             <el-menu-item index="/buildingManage" ><i class="el-icon-office-building"></i>教学楼管理</el-menu-item>
-            <el-menu-item index="/courseManage" ><i class="el-icon-document-copy"></i>课程管理</el-menu-item>
+            <!--<el-menu-item index="/courseManage" ><i class="el-icon-document-copy"></i>课程管理</el-menu-item>-->
           </el-submenu>
 
           <el-menu-item index="/userManage" ><i class="el-icon-user-solid"></i>人员管理</el-menu-item>

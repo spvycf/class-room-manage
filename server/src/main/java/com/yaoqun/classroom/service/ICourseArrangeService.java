@@ -19,4 +19,6 @@ public interface ICourseArrangeService extends IService<CourseArrange> {
     Object listCourses(CourseArrange course, String uId);
 
     Object processCourses(CourseArrange course, String uId, int page, int row);
+
+    Object deleteCourseArrange(CourseArrange course);
 }

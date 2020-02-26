@@ -33,7 +33,7 @@
               <p>{{courseDate[weekIndex].date}}</p>
             </td>
             <td class="courses" v-for="(lesson, lessonIndex) in classTableData.lessons" :key="lessonIndex">
-            <div    v-for="(course, courseIndex) in courseDate[weekIndex].courses" :class="{bgColor:courseIndex%2===1}" :key="courseIndex" class="course" @click="detail">
+            <div    v-for="(course, courseIndex) in courseDate[weekIndex].courses" :class="{bgColor:courseIndex%2===1}" :key="courseIndex" class="course" @click="detail(course.id)">
               <div v-if="(lessonIndex*6+6)<=parseInt(course.startTime.substr(0,2))&&parseInt(course.startTime.substr(0,2))<lessonIndex*6+12">
                 <p style="font-size: 11px;">{{course.courseName}}</p>
                 <!--<p style="font-size: 11px;">{{lessonIndex*6+6}}</p>
@@ -61,6 +61,7 @@
 
 
   import {listCourseUrl} from '@/api/api';
+  import {deleteCourseUrl} from '@/api/api';
 
 
   export default {
@@ -130,8 +131,25 @@
 
         );
       },
-      detail(){
+      detail(id){
+        this.$confirm('确认删除课程吗?', '删除课程', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          deleteCourseUrl(
+            {
+              'id':id
 
+            }
+          ).then(res => {
+            this.$message.success({
+              message: '删除成功',
+              center: true,
+            });
+            this.reload();
+          });
+        });
       },
       search(){
         listCourseUrl({

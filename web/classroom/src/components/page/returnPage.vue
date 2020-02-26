@@ -25,7 +25,7 @@
     <el-row :gutter="10">
 
 
-      <el-col :span="4" style="padding-left: 20px">
+      <el-col :span="4" style="padding-left: 10px">
         <el-button type="primary"   style="height: 36px">归还教室处理</el-button>
       </el-col>
 

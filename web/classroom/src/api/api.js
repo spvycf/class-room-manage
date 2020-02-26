@@ -40,6 +40,7 @@ export const saveCourseUrl =(p) => post('/api/course/save/',p);
 export const applyUrl =(p) => post('/api/course/apply/',p);
 export const returnUrl =(p) => post('/api/course/return/',p);
 export const cancelUrl =(p) => post('/api/course/cancle',p);
+export const deleteCourseUrl =(p) => post('/api/course/delete',p);
 export const listProcessUrl =(page,row,p) => post('/api/course/process/'+page+'/'+row,p);
 
 

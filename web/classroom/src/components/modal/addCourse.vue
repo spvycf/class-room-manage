@@ -6,8 +6,7 @@
       </div>
 
       <div class="modal-body">
-        <input v-model="roomId" v-show="true"></input>
-        <p>{{roomId}}1</p>
+
         <el-form  ref="addNoticeForm" :model="addCourseForm" label-width="80px" @submit.native.prevent >
 
 
@@ -141,7 +140,7 @@
 
           //新增
           saveCourseUrl({
-            'roomId':this.addCourseForm.roomId,
+            'roomId':this.$route.query.roomId,
             'courseName':this.addCourseForm.courseName,
             'type':this.addCourseForm.type,
             'date':this.addCourseForm.date,
@@ -156,7 +155,7 @@
                 center:true,
               });
               this.cancel();
-              this.$parent.reFresh();
+              this.$parent.reload();
             });
 
 

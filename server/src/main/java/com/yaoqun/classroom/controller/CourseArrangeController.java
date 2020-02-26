@@ -35,6 +35,12 @@ public class CourseArrangeController {
         return ResultUtil.Success("处理成功", object);
     }
 
+    @PostMapping("/delete")
+    public Result delete(@RequestBody CourseArrange course) {
+        Object object = arrangeService.deleteCourseArrange(course);
+        return ResultUtil.Success("删除成功", object);
+    }
+
     @PostMapping("/return")
     public Result returnCourse(@RequestBody CourseArrange course) {
         Object object = arrangeService.returnCourseArrange(course);
