@@ -4,10 +4,12 @@
   <div id="logo">
 
     <h2 class="title">教室信息管理系统</h2>
+    <h5 class="title2">by李瑶群</h5>
+
 
     <el-form ref="form" :model="form" label-width="80px" size="medium" class="loginForm">
 
-      <el-form-item label="登录名">
+      <el-form-item label="账号">
         <el-input v-model="form.loginNo"></el-input>
       </el-form-item>
 
@@ -81,7 +83,7 @@
 <style scoped>
   .el-form-item__label{color:red}
   .el-input{
-    width: 280px;
+    width: 272px;
   }
   #logo{
     background: url("../../source/classroom.jpg");
@@ -93,12 +95,16 @@
     left: 0px;
   }
   .loginForm{
-    padding-left: 810px;
-    padding-top: 128px;
+    padding-left: 819px;
+    padding-top: 86px;
   }
   .title{
-    padding-left: 900px;
+    padding-left: 908px;
     padding-top: 100px;
+  }
+  .title2{
+    padding-left: 1036px;
+    padding-top: 1px;
   }
 
 </style>
